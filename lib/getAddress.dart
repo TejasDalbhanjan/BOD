@@ -26,11 +26,11 @@ class _GetAddressState extends State<GetAddress> {
       setState(() {
         print(position);
         _position = position;
-        final coordinates =
+        /*final coordinates =
             new Coordinates(position.latitude, position.longitude);
 
         convertCoordinatesToAddress(coordinates)
-            .then((value) => _address = value);
+            .then((value) => _address = value);*/
       });
     });
   }
