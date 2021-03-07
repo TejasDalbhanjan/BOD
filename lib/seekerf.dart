@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'TC.dart';
 
 import 'dd.dart';
 
@@ -41,7 +40,7 @@ class SeekerState extends State<Seekerf> {
     return Scaffold(
       appBar:
           AppBar(title: Text("DETAILS OF SEEKER"), backgroundColor: Colors.red),
-      resizeToAvoidBottomPadding: false,
+      //resizeToAvoidBottomPadding: false,
       body: Form(
         key: _formKey,
         child: new Stack(

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "135545303545",
+    "firebase_url": "https://bodp-5bff5-default-rtdb.firebaseio.com",
     "project_id": "bodp-5bff5",
     "storage_bucket": "bodp-5bff5.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "135545303545-4noaed2jnqvno2p3osv58q4ul99gdbbe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.BOD",
+            "certificate_hash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          }
+        },
         {
           "client_id": "135545303545-q4aedi8j9t29jd115qteeggus05jsa5f.apps.googleusercontent.com",
           "client_type": 3

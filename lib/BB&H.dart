@@ -14,7 +14,7 @@ class BBState extends State<BBFul> {
         appBar: AppBar(
             title: Text("DETAILS OF HOSPITALS/BB"),
             backgroundColor: Colors.red),
-        resizeToAvoidBottomPadding: false,
+        //resizeToAvoidBottomPadding: false,
         body: Form(
           key: _formKey,
           child: new Stack(fit: StackFit.expand, children: <Widget>[

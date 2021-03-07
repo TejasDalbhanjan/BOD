@@ -1,9 +1,12 @@
+import 'package:BOD/donorf.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'Asa.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'SearchH.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter/services.dart';
 
 class LoginPage extends StatefulWidget {
   State createState() => new LoginPageState();
@@ -11,6 +14,7 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   bool _secureText = true;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   String _email;
   FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
@@ -120,9 +124,19 @@ class LoginPageState extends State<LoginPage> {
                       height: 50,
                       child: SignInButton(
                         Buttons.Google,
-                        onPressed: () async {
-                          signInWithEmailAndPassword();
+                        onPressed: () {
+                          signInWithGoogle().then((result) {
+                            if (result != null) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                    builder: (context) => Donorf()),
+                              );
+                            }
+                          });
                         },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(color: Colors.white)),
                       ),
                     ),
                     SizedBox(height: 20),
@@ -168,11 +182,38 @@ class LoginPageState extends State<LoginPage> {
               )));
     } catch (e) {
       if (formkey.currentState.validate()) {
-        Scaffold.of(context)
+        ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("Failed To SignIn")));
       }
 
       print(e);
     }
+  }
+
+  Future<String> createUserWithEmailAndPassword(
+      String email, String password, String name) async {
+    final authResult = await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    // Update the username
+    await updateUserName(name, authResult.user);
+    return authResult.user.uid;
+  }
+
+  Future updateUserName(String name, User currentUser) async {
+    await currentUser.updateProfile(displayName: name);
+    await currentUser.reload();
+  }
+
+  Future<String> signInWithGoogle() async {
+    final GoogleSignInAccount account = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication _googleAuth = await account.authentication;
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      idToken: _googleAuth.idToken,
+      accessToken: _googleAuth.accessToken,
+    );
+    return (await _auth.signInWithCredential(credential)).user.uid;
   }
 }

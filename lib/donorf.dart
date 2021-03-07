@@ -78,7 +78,7 @@ class DonorfState extends State<Donorf> {
         key: _scaffoldkey,
         appBar: AppBar(
             title: Text("DETAILS OF DONOR"), backgroundColor: Colors.red),
-        resizeToAvoidBottomPadding: false,
+        //resizeToAvoidBottomPadding: false,
         body: Form(
           key: _formKey,
           child: Container(

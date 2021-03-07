@@ -13,7 +13,7 @@ class _UpdateState extends State<Update> {
     return Scaffold(
       appBar:
           AppBar(title: Text("Change Password"), backgroundColor: Colors.red),
-      resizeToAvoidBottomPadding: false,
+      //resizeToAvoidBottomPadding: false,
       body: Form(
         child: Container(
           padding: EdgeInsets.all(10),
