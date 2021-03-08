@@ -16,10 +16,11 @@ class LoginPageState extends State<LoginPage> {
   bool _secureText = true;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   String _email;
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  static FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passController = TextEditingController();
+
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
     return Scaffold(
@@ -176,35 +177,20 @@ class LoginPageState extends State<LoginPage> {
       if (!user.emailVerified) {
         await user.sendEmailVerification();
       }
+
       Navigator.of(context).push(MaterialPageRoute(
           builder: (_) => SearchH(
                 user: user,
               )));
     } catch (e) {
+      print("not able to signin");
       if (formkey.currentState.validate()) {
-        ScaffoldMessenger.of(context)
+        Scaffold.of(context)
             .showSnackBar(SnackBar(content: Text("Failed To SignIn")));
       }
 
       print(e);
     }
-  }
-
-  Future<String> createUserWithEmailAndPassword(
-      String email, String password, String name) async {
-    final authResult = await _auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
-
-    // Update the username
-    await updateUserName(name, authResult.user);
-    return authResult.user.uid;
-  }
-
-  Future updateUserName(String name, User currentUser) async {
-    await currentUser.updateProfile(displayName: name);
-    await currentUser.reload();
   }
 
   Future<String> signInWithGoogle() async {

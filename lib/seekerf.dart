@@ -11,10 +11,10 @@ class Seekerf extends StatefulWidget {
 }
 
 class SeekerState extends State<Seekerf> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  //FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController _name = TextEditingController();
   TextEditingController _addController = TextEditingController();
-  TextEditingController _displayName = TextEditingController();
+  //TextEditingController _displayName = TextEditingController();
   TextEditingController _emailController = TextEditingController();
 
   TextEditingController _passController = TextEditingController();
@@ -174,11 +174,10 @@ class SeekerState extends State<Seekerf> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       Text(locationMessage),
-                                      FlatButton(
+                                      TextButton(
                                           onPressed: () {
                                             getCurrentLocation();
                                           },
-                                          color: Colors.green,
                                           child: Text("find locaion"))
                                     ])
                                 /*decoration: InputDecoration(

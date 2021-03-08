@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'appD.dart';
+import 'package:qr_utils/qr_utils.dart';
 
 class SearchH extends StatefulWidget {
   final User user;
@@ -10,14 +11,26 @@ class SearchH extends StatefulWidget {
 }
 
 class SearchHState extends State<SearchH> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
         title: Text('BOP'),
         backgroundColor: Colors.red,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.qr_code_scanner),
+            onPressed: () {
+              final qrResult = QrUtils.scanQR;
+              print(qrResult);
+            },
+          ),
+          Padding(padding: EdgeInsets.all(5))
+        ],
       ),
-      drawer: ADrawer(),
+      drawer: ADrawer(user: _auth.currentUser),
       body: Column(
         children: <Widget>[
           Center(

@@ -129,13 +129,12 @@ class _BloodDState extends State<BloodD> {
           ),
           Center(
             child: Container(
-              child: RaisedButton(
+              child: ElevatedButton(
                 onPressed: () {},
                 child: Text(
                   "Search",
                   style: TextStyle(color: Colors.white),
                 ),
-                color: Colors.red[500],
               ),
             ),
           ),

@@ -327,7 +327,6 @@ class DonorfState extends State<Donorf> {
       final User user = (await _auth.createUserWithEmailAndPassword(
               email: _emailController.text, password: _passController.text))
           .user;
-
       if (user != null) {
         if (!user.emailVerified) {
           await user.sendEmailVerification();
