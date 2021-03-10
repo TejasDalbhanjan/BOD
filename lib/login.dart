@@ -16,6 +16,8 @@ class LoginPageState extends State<LoginPage> {
   bool _secureText = true;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   String _email;
+  String _pass;
+
   static FirebaseAuth _auth = FirebaseAuth.instance;
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
@@ -34,10 +36,14 @@ class LoginPageState extends State<LoginPage> {
               colorBlendMode: BlendMode.colorBurn,
             ),
             Container(
+                height: (MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).padding.top -
+                    MediaQuery.of(context).padding.bottom),
                 padding: EdgeInsets.only(top: 70),
                 child: Column(
                   children: <Widget>[
                     Container(
+                      height: MediaQuery.of(context).size.height * 0.1,
                       padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
                       child: TextFormField(
                         controller: _emailController,
@@ -62,9 +68,11 @@ class LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     Container(
+                      height: MediaQuery.of(context).size.height * 0.1,
                       padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: TextFormField(
                         controller: _passController,
+                        onSaved: (String val) => setState(() => _pass = val),
                         textInputAction: TextInputAction.next,
                         onFieldSubmitted: (_) => node.unfocus(),
                         validator: (value) {
@@ -94,12 +102,12 @@ class LoginPageState extends State<LoginPage> {
                         keyboardAppearance: Brightness.light,
                       ),
                     ),
-                    SizedBox(height: 40),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                     Container(
-                      height: 50,
+                      height: MediaQuery.of(context).size.height * 0.07,
                       child: MaterialButton(
                         onPressed: () async {
-                          signInWithEmailAndPassword();
+                          signInWithEmailAndPassword(_email, _pass);
                         },
                         color: Colors.red,
                         highlightColor: Colors.redAccent,
@@ -122,7 +130,7 @@ class LoginPageState extends State<LoginPage> {
                     ),
                     SizedBox(height: 20),
                     Container(
-                      height: 50,
+                      height: MediaQuery.of(context).size.height * 0.07,
                       child: SignInButton(
                         Buttons.Google,
                         onPressed: () {
@@ -140,7 +148,9 @@ class LoginPageState extends State<LoginPage> {
                             side: BorderSide(color: Colors.white)),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -169,19 +179,20 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  void signInWithEmailAndPassword() async {
+  Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      final User user = (await _auth.signInWithEmailAndPassword(
-              email: _emailController.text, password: _passController.text))
-          .user;
+      UserCredential result = (await _auth.signInWithEmailAndPassword(
+          email: _emailController.text.trim(), password: _passController.text));
+      User user = result.user;
       if (!user.emailVerified) {
         await user.sendEmailVerification();
       }
 
-      Navigator.of(context).push(MaterialPageRoute(
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => SearchH(
                 user: user,
               )));
+      return user;
     } catch (e) {
       print("not able to signin");
       if (formkey.currentState.validate()) {

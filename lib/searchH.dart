@@ -1,7 +1,8 @@
+import 'package:qrscans/qrscan.dart' as scanner;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'appD.dart';
-import 'package:qr_utils/qr_utils.dart';
+//import 'package:qrscan/qrscan.dart' as scanner;
 
 class SearchH extends StatefulWidget {
   final User user;
@@ -22,9 +23,8 @@ class SearchHState extends State<SearchH> {
         actions: [
           IconButton(
             icon: Icon(Icons.qr_code_scanner),
-            onPressed: () {
-              final qrResult = QrUtils.scanQR;
-              print(qrResult);
+            onPressed: () async {
+              _scan();
             },
           ),
           Padding(padding: EdgeInsets.all(5))
@@ -33,6 +33,9 @@ class SearchHState extends State<SearchH> {
       drawer: ADrawer(user: _auth.currentUser),
       body: Column(
         children: <Widget>[
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.02,
+          ),
           Center(
             child: Text(
               "Donate Blood",
@@ -40,7 +43,11 @@ class SearchHState extends State<SearchH> {
               textAlign: TextAlign.center,
             ),
           ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.02,
+          ),
           Container(
+            padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
             child: TextField(
               decoration: InputDecoration(
                 labelText: "Search for BB/Hospital",
@@ -54,5 +61,10 @@ class SearchHState extends State<SearchH> {
         ],
       ),
     );
+  }
+
+  Future _scan() async {
+    String barcode = await scanner.scan();
+    print(barcode);
   }
 }

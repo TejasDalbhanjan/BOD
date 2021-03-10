@@ -32,10 +32,7 @@ class ADrawerState extends State<ADrawer> {
               Navigator.pop(context);
             },
           ),
-          new Divider(
-            color: Colors.black,
-            height: 5,
-          ),
+          _divider(),
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Setting'),
@@ -45,10 +42,7 @@ class ADrawerState extends State<ADrawer> {
                   context, MaterialPageRoute(builder: (context) => Set()));
             },
           ),
-          new Divider(
-            color: Colors.black,
-            height: 5,
-          ),
+          _divider(),
           ListTile(
             leading: Icon(Icons.supervisor_account),
             title: Text('About us'),
@@ -57,10 +51,7 @@ class ADrawerState extends State<ADrawer> {
               Navigator.pop(context);
             },
           ),
-          new Divider(
-            color: Colors.black,
-            height: 5,
-          ),
+          _divider(),
           ListTile(
             leading: Icon(Icons.help),
             title: Text('Help'),
@@ -69,28 +60,27 @@ class ADrawerState extends State<ADrawer> {
               Navigator.pop(context);
             },
           ),
-          new Divider(
-            color: Colors.black,
-            height: 5,
-          ),
+          _divider(),
           ListTile(
               leading: Icon(Icons.qr_code),
               title: Text('QrCode'),
               hoverColor: Colors.red,
               onTap: () {
-                Navigator.push(
+                Navigator.pushReplacement(
                     context, MaterialPageRoute(builder: (context) => CodeQR()));
               }),
-          new Divider(
-            color: Colors.black,
-            height: 5,
-          ),
+          _divider(),
           ListTile(
             leading: Icon(Icons.logout),
             title: Text('Logout'),
             hoverColor: Colors.red,
-            onTap: () {
-              _signOut(_auth.currentUser);
+            onTap: () async {
+              await signOut()
+                  .whenComplete(() => Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (context) => LoginPage(),
+                      ),
+                      (route) => false));
             },
           )
         ],
@@ -122,18 +112,21 @@ class ADrawerState extends State<ADrawer> {
     }
   }
 
-  Future<void> _signOut(User user) async {
-    user = _auth.signOut() as User;
-    print("loggedOut");
-    await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginPage()));
+  Future<bool> signOut() async {
+    //User user = await _auth.currentUser;
+    try {
+      await _auth.signOut();
+      return Future.value(true);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
-  /*void _signOut() {
-    FirebaseAuth.instance.signOut();
-    User user = FirebaseAuth.instance.currentUser;
-    //print('$user');
-    runApp(new MaterialApp(
-      home: new LoginPage(),
-    ));
-  }*/
+
+  _divider() {
+    return Container(
+      color: Colors.black,
+      height: MediaQuery.of(context).size.height * 0.001,
+    );
+  }
 }

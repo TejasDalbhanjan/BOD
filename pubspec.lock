@@ -336,13 +336,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.2.0"
-  qr_utils:
+  qrscans:
     dependency: "direct main"
     description:
-      name: qr_utils
+      name: qrscans
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.0.7"
   quiver:
     dependency: transitive
     description:
@@ -434,4 +434,4 @@ packages:
     version: "2.1.0-nullsafety.3"
 sdks:
   dart: ">=2.10.0-110 <2.11.0"
-  flutter: ">=1.16.0 <2.0.0"
+  flutter: ">=1.20.0 <2.0.0"

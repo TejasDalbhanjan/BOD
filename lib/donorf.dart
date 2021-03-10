@@ -316,7 +316,7 @@ class DonorfState extends State<Donorf> {
 
   GlobalKey<FormState> buildFormKey() => _formKey;
 
-  void _registerAccount() async {
+  Future _registerAccount() async {
     String name = _displayName.text;
     String email1 = _emailController.text;
     String adhar = _adharController.text;
@@ -324,9 +324,10 @@ class DonorfState extends State<Donorf> {
     String add = _addController.text;
     print("On Register account");
     try {
-      final User user = (await _auth.createUserWithEmailAndPassword(
-              email: _emailController.text, password: _passController.text))
-          .user;
+      UserCredential result = (await _auth.createUserWithEmailAndPassword(
+          email: _emailController.text, password: _passController.text));
+      User user = result.user;
+
       if (user != null) {
         if (!user.emailVerified) {
           await user.sendEmailVerification();
@@ -340,9 +341,11 @@ class DonorfState extends State<Donorf> {
           adhar,
           user.uid,
         );
+
         final user1 = _auth.currentUser;
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => TC(user: user1)));
+        return user;
       }
     } catch (e) {
       print(e.message);
