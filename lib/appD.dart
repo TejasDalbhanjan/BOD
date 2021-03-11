@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'login.dart';
-//import 'dd.dart';
+import 'db.dart';
 import 'qr.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -75,7 +75,8 @@ class ADrawerState extends State<ADrawer> {
             title: Text('Logout'),
             hoverColor: Colors.red,
             onTap: () async {
-              await signOut()
+              await Db()
+                  .signOut()
                   .whenComplete(() => Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                         builder: (context) => LoginPage(),
@@ -109,17 +110,6 @@ class ADrawerState extends State<ADrawer> {
       return Text(_auth.currentUser.displayName);
     } else {
       return Text("Name");
-    }
-  }
-
-  Future<bool> signOut() async {
-    //User user = await _auth.currentUser;
-    try {
-      await _auth.signOut();
-      return Future.value(true);
-    } catch (e) {
-      print(e.toString());
-      return null;
     }
   }
 

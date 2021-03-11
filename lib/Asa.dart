@@ -1,7 +1,7 @@
-import 'package:BOD/appD.dart';
+//import 'package:BOD/appD.dart';
 import 'package:flutter/material.dart';
 import 'donorf.dart';
-import 'seekerf.dart';
+//import 'seekerf.dart';
 import 'BB&H.dart';
 
 class Asa extends StatefulWidget {
@@ -15,16 +15,15 @@ class _LoginasState extends State<Asa> {
         title: Text('Register'),
         backgroundColor: Colors.red,
       ),
-      drawer: ADrawer(),
       body: Center(
           child: Column(
         children: <Widget>[
           SizedBox(
-            height: 70,
+            height: MediaQuery.of(context).size.height * 0.2,
           ),
           Container(
-            height: 80,
-            width: 200,
+            height: MediaQuery.of(context).size.height * 0.2,
+            width: MediaQuery.of(context).size.height * 0.4,
             padding: EdgeInsets.all(10),
             child: RaisedButton(
               onPressed: () {
@@ -38,39 +37,15 @@ class _LoginasState extends State<Asa> {
                     color: Colors.white),
               ),
               color: Colors.red,
+              highlightColor: Colors.black,
             ),
           ),
           SizedBox(
-            height: 50,
+            height: MediaQuery.of(context).size.height * 0.1,
           ),
           Container(
-            height: 80,
-            width: 200,
-            padding: EdgeInsets.all(10),
-            child: RaisedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Seekerf()),
-                );
-              },
-              child: Text(
-                "As a Seeker",
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-              ),
-              color: Colors.red,
-              highlightColor: Colors.white,
-            ),
-          ),
-          SizedBox(
-            height: 50,
-          ),
-          Container(
-            height: 80,
-            width: 200,
+            height: MediaQuery.of(context).size.height * 0.2,
+            width: MediaQuery.of(context).size.height * 0.4,
             padding: EdgeInsets.all(10),
             child: RaisedButton(
               onPressed: () {
@@ -87,7 +62,7 @@ class _LoginasState extends State<Asa> {
                     fontWeight: FontWeight.bold),
               ),
               color: Colors.red,
-              highlightColor: Colors.white,
+              highlightColor: Colors.black,
             ),
           )
         ],

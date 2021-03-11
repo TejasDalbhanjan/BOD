@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 
 //import 'seeker.dart';
 import 'db.dart';
-import 'TC.dart';
+import 'homepage.dart';
 
 class Donorf extends StatefulWidget {
   @override
@@ -166,7 +166,7 @@ class DonorfState extends State<Donorf> {
                                 padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
                                 child: TextFormField(
                                   validator: (value) {
-                                    if (value.isEmpty) {
+                                    if (value.isEmpty || value.length != 12) {
                                       return 'Enter adharcard number!';
                                     }
                                     return null;
@@ -208,8 +208,8 @@ class DonorfState extends State<Donorf> {
                                 child: TextFormField(
                                   controller: _passController,
                                   validator: (value) {
-                                    if (value.isEmpty) {
-                                      return 'Enter password !';
+                                    if (value.isEmpty || value.length < 8) {
+                                      return 'Enter Valid password !';
                                     }
                                     return null;
                                   },
@@ -333,7 +333,7 @@ class DonorfState extends State<Donorf> {
           await user.sendEmailVerification();
         }
 
-        await Db().createDonorData(
+        await Db().createUserData(
           name,
           email1,
           add,
@@ -344,7 +344,7 @@ class DonorfState extends State<Donorf> {
 
         final user1 = _auth.currentUser;
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => TC(user: user1)));
+            MaterialPageRoute(builder: (context) => BottomNB(user: user1)));
         return user;
       }
     } catch (e) {

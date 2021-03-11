@@ -42,11 +42,11 @@ dependencies:
   qrscans: ^0.0.5
 
 
-
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
+ 
   flutter_localizations: 
     sdk: flutter
 

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'update_P.dart';
 import 'editProfile.dart';
+//import 'package:firebase_auth/firebase_auth.dart';
+import 'delete.dart';
 
 class Set extends StatelessWidget {
+  //FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +80,18 @@ class Set extends StatelessWidget {
                                   Icon(Icons.language, color: Colors.redAccent),
                               title: Text('Change Language'),
                               trailing: Icon(Icons.keyboard_arrow_right),
-                              onTap: () {})
+                              onTap: () {}),
+                          ListTile(
+                              leading:
+                                  Icon(Icons.delete, color: Colors.redAccent),
+                              title: Text('Delete Account'),
+                              trailing: Icon(Icons.keyboard_arrow_right),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Delete()));
+                              })
                         ]),
                       ),
                       SizedBox(

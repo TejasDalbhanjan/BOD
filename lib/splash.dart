@@ -12,10 +12,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'BOP',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          appBarTheme: AppBarTheme(
-        color: Color(0xFFF32828),
-      )),
       home: SplashS(),
     );
   }
@@ -36,35 +32,33 @@ class _SplashSState extends State<SplashS> {
 
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: AppBar(title: Text("BOP"), backgroundColor: Colors.red),
-        backgroundColor: Colors.white,
         body: Stack(fit: StackFit.expand, children: <Widget>[
-          Column(children: <Widget>[
-            Expanded(
-                flex: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                        backgroundColor: Colors.red,
-                        radius: 60,
-                        child: Icon(
-                          Icons.ac_unit_rounded,
-                          color: Colors.black,
-                        )),
-                    Padding(
-                      padding: EdgeInsets.only(top: 10),
-                    ),
-                    Text(
-                      "BOP",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ))
-          ]),
-        ]));
+      Column(children: <Widget>[
+        Expanded(
+            flex: 2,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                    backgroundColor: Colors.red,
+                    radius: 60,
+                    child: Icon(
+                      Icons.ac_unit_rounded,
+                      color: Colors.black,
+                    )),
+                Padding(
+                  padding: EdgeInsets.only(top: 10),
+                ),
+                Text(
+                  "BOP",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold),
+                )
+              ],
+            ))
+      ]),
+    ]));
   }
 }

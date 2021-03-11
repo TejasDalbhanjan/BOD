@@ -1,31 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+FirebaseAuth _auth = FirebaseAuth.instance;
 
 class Db {
-  final CollectionReference donor =
-      FirebaseFirestore.instance.collection("donor");
-  final CollectionReference seeker =
-      FirebaseFirestore.instance.collection("seeker");
+  final CollectionReference user =
+      FirebaseFirestore.instance.collection("user");
+
   final CollectionReference hospitalbloodbank =
-      FirebaseFirestore.instance.collection("hospitalbloodbank");
-  Future<void> createDonorData(String name, String email, String address,
+      FirebaseFirestore.instance.collection("hospital");
+  Future<void> createUserData(String name, String email, String address,
       String age, String adhar, String uid) async {
-    return await donor.doc(uid).set({
+    return await user.doc(uid).set({
       'uid': uid,
       'name': name,
       'email': email,
       'address': address,
       'age': age,
       'adhar': adhar,
-    });
-  }
-
-  Future<void> createSeekerData(
-      String name, String address, String contact, String uid) async {
-    return await seeker.doc(uid).set({
-      'uid': uid,
-      'name': name,
-      'address': address,
-      'contact': contact,
     });
   }
 
@@ -36,6 +28,46 @@ class Db {
       'name': name,
       'address': address,
       'Licence_No': licenseno,
+    });
+  }
+
+  Future<bool> signOut() async {
+    try {
+      await _auth.signOut();
+      return Future.value(true);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  Future<void> updateAuth(String email) async {
+    return await _auth.currentUser.updateEmail(email);
+  }
+
+  Future updateDataUser(String email, String uid) async {
+    return await user.doc(uid).update({
+      'email': email,
+    });
+  }
+
+  updateDataHh(String old, Map<String, String> updated) {
+    FirebaseFirestore.instance
+        .collection("hospital")
+        .doc(old)
+        .update(updated)
+        .catchError((e) {
+      print("error");
+    });
+  }
+
+  Future deleteauth(String id, String pass) async {
+    await FirebaseFirestore.instance
+        .collection("user")
+        .doc(id)
+        .delete()
+        .catchError((e) {
+      print("error");
     });
   }
 }

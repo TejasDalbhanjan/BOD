@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Update extends StatefulWidget {
   Update({Key key}) : super(key: key);
@@ -8,6 +9,12 @@ class Update extends StatefulWidget {
 }
 
 class _UpdateState extends State<Update> {
+  bool checkpassword = true;
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+  TextEditingController _currentpass = TextEditingController();
+  TextEditingController _newpass = TextEditingController();
+  TextEditingController _confirmpass = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,6 +22,7 @@ class _UpdateState extends State<Update> {
           AppBar(title: Text("Change Password"), backgroundColor: Colors.red),
       //resizeToAvoidBottomPadding: false,
       body: Form(
+        key: _formkey,
         child: Container(
           padding: EdgeInsets.all(10),
           child: Column(
@@ -24,7 +32,9 @@ class _UpdateState extends State<Update> {
               ),
               TextFormField(
                 obscureText: true,
+                controller: _currentpass,
                 decoration: InputDecoration(
+                    errorText: checkpassword ? null : "Check Your Password",
                     hintText: "Current Password",
                     labelText: "Current Password",
                     labelStyle: TextStyle(fontWeight: FontWeight.bold)),
@@ -34,6 +44,13 @@ class _UpdateState extends State<Update> {
               ),
               TextFormField(
                 obscureText: true,
+                validator: (value) {
+                  if (value.isEmpty || value.length < 8) {
+                    return 'Enter Valid password !';
+                  }
+                  return null;
+                },
+                controller: _newpass,
                 decoration: InputDecoration(
                     hintText: "New Password",
                     labelText: "New Password",
@@ -43,7 +60,14 @@ class _UpdateState extends State<Update> {
                 height: 20,
               ),
               TextFormField(
+                controller: _confirmpass,
                 obscureText: true,
+                validator: (String val) {
+                  if (val != _newpass.text)
+                    return "Invalid Password";
+                  else
+                    return null;
+                },
                 decoration: InputDecoration(
                     hintText: "Confirm Password",
                     labelText: "Confirm Password",
@@ -53,7 +77,11 @@ class _UpdateState extends State<Update> {
                 height: 20,
               ),
               RaisedButton(
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    checkpassword = validatePass(_currentpass.text);
+                  });
+                },
                 color: Colors.redAccent,
                 child: Text(
                   "Update",
@@ -66,5 +94,18 @@ class _UpdateState extends State<Update> {
         ),
       ),
     );
+  }
+
+  validatePass(String pass) async {
+    var user = _auth.currentUser;
+
+    try {
+      var authCredential =
+          EmailAuthProvider.credential(email: user.email, password: pass);
+      var authResult = await user.reauthenticateWithCredential(authCredential);
+      return authResult.user != null;
+    } catch (e) {
+      print(e);
+    }
   }
 }

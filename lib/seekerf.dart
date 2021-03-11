@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-
+import 'db.dart';
+import 'TC.dart';
 import 'dd.dart';
 
 class Seekerf extends StatefulWidget {
@@ -11,10 +12,10 @@ class Seekerf extends StatefulWidget {
 }
 
 class SeekerState extends State<Seekerf> {
-  //FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController _name = TextEditingController();
   TextEditingController _addController = TextEditingController();
-  //TextEditingController _displayName = TextEditingController();
+  TextEditingController _displayName = TextEditingController();
   TextEditingController _emailController = TextEditingController();
 
   TextEditingController _passController = TextEditingController();
@@ -231,14 +232,14 @@ class SeekerState extends State<Seekerf> {
 
   GlobalKey<FormState> buildFormKey() => _formKey;
 
-  /*void _registerAccount() async {
+  void _registerAccount() async {
     String name = _displayName.text;
     String email1 = _emailController.text;
 
     String add = _addController.text;
     print("On Register account");
     try {
-      final User user = (await _auth.signInWithCredential(
+      final User user = (await _auth.signInWithEmailAndPassword(
               email: _emailController.text, password: _passController.text))
           .user;
 
@@ -260,5 +261,6 @@ class SeekerState extends State<Seekerf> {
     } catch (e) {
       print(e.message);
     }
-  }*/
+  }
 }
+*/
