@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'settings.dart';
+import 'package:qrscans/qrscan.dart' as scanner;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'login.dart';
 import 'db.dart';
 import 'qr.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class ADrawer extends StatefulWidget {
@@ -21,12 +23,26 @@ class ADrawerState extends State<ADrawer> {
       child: ListView(
         children: <Widget>[
           new UserAccountsDrawerHeader(
-              accountName: getProfilename(),
-              accountEmail: getProfileemail(),
-              currentAccountPicture: getProfileImage()),
+            decoration: BoxDecoration(
+              color: Colors.red[300],
+            ),
+            accountName: getProfilename(),
+            accountEmail: getProfileemail(),
+            currentAccountPicture: getProfileImage(),
+            otherAccountsPictures: [
+              IconButton(
+                icon: Icon(Icons.qr_code_scanner_sharp),
+                onPressed: () async {
+                  _scan();
+                },
+                color: Colors.white,
+                iconSize: 40,
+              )
+            ],
+          ),
           ListTile(
             leading: Icon(Icons.home),
-            title: Text('Home'),
+            title: Text('Home').tr(),
             hoverColor: Colors.red,
             onTap: () {
               Navigator.pop(context);
@@ -35,7 +51,7 @@ class ADrawerState extends State<ADrawer> {
           _divider(),
           ListTile(
             leading: Icon(Icons.settings),
-            title: Text('Setting'),
+            title: Text('Setting').tr(),
             hoverColor: Colors.red,
             onTap: () {
               Navigator.push(
@@ -45,7 +61,7 @@ class ADrawerState extends State<ADrawer> {
           _divider(),
           ListTile(
             leading: Icon(Icons.supervisor_account),
-            title: Text('About us'),
+            title: Text('Aboutu').tr(),
             hoverColor: Colors.red,
             onTap: () {
               Navigator.pop(context);
@@ -63,7 +79,7 @@ class ADrawerState extends State<ADrawer> {
           _divider(),
           ListTile(
               leading: Icon(Icons.qr_code),
-              title: Text('QrCode'),
+              title: Text('QrCode').tr(),
               hoverColor: Colors.red,
               onTap: () {
                 Navigator.pushReplacement(
@@ -72,7 +88,7 @@ class ADrawerState extends State<ADrawer> {
           _divider(),
           ListTile(
             leading: Icon(Icons.logout),
-            title: Text('Logout'),
+            title: Text('Logout').tr(),
             hoverColor: Colors.red,
             onTap: () async {
               await Db()
@@ -83,7 +99,7 @@ class ADrawerState extends State<ADrawer> {
                       ),
                       (route) => false));
             },
-          )
+          ),
         ],
       ),
     );
@@ -106,6 +122,9 @@ class ADrawerState extends State<ADrawer> {
   }
 
   getProfilename() {
+    User user = _auth.currentUser;
+    final id = user.uid;
+
     if (_auth.currentUser.displayName != null) {
       return Text(_auth.currentUser.displayName);
     } else {
@@ -118,5 +137,10 @@ class ADrawerState extends State<ADrawer> {
       color: Colors.black,
       height: MediaQuery.of(context).size.height * 0.001,
     );
+  }
+
+  Future _scan() async {
+    String barcode = await scanner.scan();
+    print(barcode);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AccDec extends StatefulWidget {
   @override
@@ -26,13 +27,13 @@ class _AccDecState extends State<AccDec> {
               elevation: 8.0,
               child: Center(
                 child: Text(
-                  'ACCEPT',
+                  'Accept',
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
+                ).tr(),
               ),
             ),
           ),
@@ -50,13 +51,13 @@ class _AccDecState extends State<AccDec> {
               elevation: 8.0,
               child: Center(
                 child: Text(
-                  'DECLINE',
+                  'Decline',
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
+                ).tr(),
               ),
             ),
           ),

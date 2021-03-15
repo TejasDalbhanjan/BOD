@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class BBFul extends StatefulWidget {
   @override
@@ -11,9 +12,8 @@ class BBState extends State<BBFul> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: Text("DETAILS OF HOSPITALS/BB"),
-            backgroundColor: Colors.red),
+        appBar:
+            AppBar(title: Text("DetailsHH").tr(), backgroundColor: Colors.red),
         //resizeToAvoidBottomPadding: false,
         body: Form(
           key: _formKey,
@@ -42,7 +42,7 @@ class BBState extends State<BBFul> {
                                   return null;
                               },
                               decoration: InputDecoration(
-                                  labelText: 'Name of Hospital/Blood Bank -',
+                                  labelText: 'nameoHH'.tr(),
                                   labelStyle: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
@@ -61,7 +61,7 @@ class BBState extends State<BBFul> {
                                   return null;
                               },
                               decoration: InputDecoration(
-                                  labelText: 'Address of Hospital/Blood Bank -',
+                                  labelText: 'adHH'.tr(),
                                   labelStyle: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
@@ -74,7 +74,7 @@ class BBState extends State<BBFul> {
                             padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
                             child: TextFormField(
                               decoration: InputDecoration(
-                                  labelText: 'Certificate -',
+                                  labelText: 'Certificate'.tr(),
                                   labelStyle: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
@@ -93,7 +93,7 @@ class BBState extends State<BBFul> {
                                   return null;
                               },
                               decoration: InputDecoration(
-                                  labelText: 'License Number -',
+                                  labelText: 'LN'.tr(),
                                   labelStyle: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
@@ -124,7 +124,7 @@ class BBState extends State<BBFul> {
                               elevation: 8.0,
                               child: Center(
                                 child: Text(
-                                  'SUBMIT',
+                                  'SUBMIT'.tr(),
                                   style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,

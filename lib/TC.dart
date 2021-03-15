@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-//import 'searchH.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class TC extends StatefulWidget {
@@ -30,7 +30,7 @@ class _AccDecState extends State<TC> {
               elevation: 8.0,
               child: Center(
                 child: Text(
-                  'ACCEPT',
+                  'Accept'.tr(),
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,
@@ -54,7 +54,7 @@ class _AccDecState extends State<TC> {
               elevation: 8.0,
               child: Center(
                 child: Text(
-                  'DECLINE',
+                  'Decline'.tr(),
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,

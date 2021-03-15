@@ -3,6 +3,7 @@ import 'db.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'login.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Delete extends StatefulWidget {
   @override
@@ -21,7 +22,7 @@ class _DeleteState extends State<Delete> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Delete Account"),
+        title: Text("DA").tr(),
       ),
       body: Container(
         padding: EdgeInsets.all(10),
@@ -33,7 +34,7 @@ class _DeleteState extends State<Delete> {
                 fillColor: Colors.grey,
                 hintText: email1,
                 floatingLabelBehavior: FloatingLabelBehavior.always,
-                labelText: "Email-Id",
+                labelText: "Email-Id".tr(),
               ),
               style: TextStyle(decorationStyle: TextDecorationStyle.solid),
             ),
@@ -43,7 +44,7 @@ class _DeleteState extends State<Delete> {
             TextField(
               controller: pass,
               decoration: InputDecoration(
-                labelText: "Password",
+                labelText: "Password".tr(),
               ),
             ),
             Center(
@@ -54,7 +55,7 @@ class _DeleteState extends State<Delete> {
                     style: TextStyle(
                       color: Colors.white,
                     ),
-                  ),
+                  ).tr(),
                   color: Colors.red,
                   elevation: 8,
                   onPressed: () async {

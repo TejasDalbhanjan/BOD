@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Update extends StatefulWidget {
   Update({Key key}) : super(key: key);
@@ -18,8 +19,7 @@ class _UpdateState extends State<Update> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: Text("Change Password"), backgroundColor: Colors.red),
+      appBar: AppBar(title: Text("Changep").tr(), backgroundColor: Colors.red),
       //resizeToAvoidBottomPadding: false,
       body: Form(
         key: _formkey,
@@ -35,8 +35,8 @@ class _UpdateState extends State<Update> {
                 controller: _currentpass,
                 decoration: InputDecoration(
                     errorText: checkpassword ? null : "Check Your Password",
-                    hintText: "Current Password",
-                    labelText: "Current Password",
+                    hintText: "CurrentPassword".tr(),
+                    labelText: "CurrentPassword".tr(),
                     labelStyle: TextStyle(fontWeight: FontWeight.bold)),
               ),
               SizedBox(
@@ -52,8 +52,8 @@ class _UpdateState extends State<Update> {
                 },
                 controller: _newpass,
                 decoration: InputDecoration(
-                    hintText: "New Password",
-                    labelText: "New Password",
+                    hintText: "NewPassword".tr(),
+                    labelText: "NewPassword".tr(),
                     labelStyle: TextStyle(fontWeight: FontWeight.bold)),
               ),
               SizedBox(
@@ -69,8 +69,8 @@ class _UpdateState extends State<Update> {
                     return null;
                 },
                 decoration: InputDecoration(
-                    hintText: "Confirm Password",
-                    labelText: "Confirm Password",
+                    hintText: "ConfirmPassword".tr(),
+                    labelText: "ConfirmPassword".tr(),
                     labelStyle: TextStyle(fontWeight: FontWeight.bold)),
               ),
               SizedBox(
@@ -87,7 +87,7 @@ class _UpdateState extends State<Update> {
                   "Update",
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.bold),
-                ),
+                ).tr(),
               )
             ],
           ),

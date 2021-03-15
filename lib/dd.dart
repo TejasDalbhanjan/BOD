@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'Blood.dart';
 import 'Organ.dart';
 import 'appD.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Dd extends StatefulWidget {
   State createState() => new DropState();
@@ -21,11 +22,11 @@ class DropState extends State<Dd> {
       drawer: ADrawer(),
       body: DropdownButtonFormField<String>(
         decoration: InputDecoration(
-          labelText: "Select Type",
+          labelText: "SelectType".tr(),
         ),
         elevation: 4,
         hint: Container(
-          child: Text("Select"),
+          child: Text("Select").tr(),
         ),
         items: select.map((String select) {
           return DropdownMenuItem<String>(

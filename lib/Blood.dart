@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'appD.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'Organ.dart';
 
 class BloodD extends StatefulWidget {
@@ -19,7 +20,7 @@ class _BloodDState extends State<BloodD> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: Text('BLOOD'),
+        title: Text('Blood').tr(),
         backgroundColor: Colors.red,
       ),
       drawer: ADrawer(),
@@ -31,11 +32,11 @@ class _BloodDState extends State<BloodD> {
           ),
           DropdownButtonFormField<String>(
             decoration: InputDecoration(
-              labelText: "Select Type",
+              labelText: "SelectType".tr(),
             ),
             elevation: 4,
             hint: Container(
-              child: Text("Select"),
+              child: Text("Select").tr(),
             ),
             items: select.map((String select) {
               return DropdownMenuItem<String>(
@@ -60,14 +61,14 @@ class _BloodDState extends State<BloodD> {
             height: 10,
           ),
           Text(
-            "Select Blood Group:",
+            "Sb",
             textAlign: TextAlign.left,
-          ),
+          ).tr(),
           DropdownButtonFormField<String>(
-            decoration: InputDecoration(labelText: "Blood"),
+            decoration: InputDecoration(labelText: "Blood".tr()),
             elevation: 4,
             hint: Container(
-              child: Text("Blood"),
+              child: Text("Blood").tr(),
             ),
             items: blood.map((String blood) {
               return DropdownMenuItem<String>(
@@ -91,9 +92,9 @@ class _BloodDState extends State<BloodD> {
           Row(
             children: [
               Text(
-                "Search for Location:",
+                "SearchLoc",
                 textAlign: TextAlign.left,
-              ),
+              ).tr(),
               SizedBox(
                 width: 190,
               ),
@@ -101,12 +102,12 @@ class _BloodDState extends State<BloodD> {
                 radius: 10,
                 onTap: () {},
                 child: Text(
-                  "Current location",
+                  "CurrentLoc",
                   style: TextStyle(
                     decoration: TextDecoration.underline,
                     color: Colors.red,
                   ),
-                ),
+                ).tr(),
               ),
             ],
           ),
@@ -116,7 +117,7 @@ class _BloodDState extends State<BloodD> {
           Container(
             child: TextField(
               decoration: InputDecoration(
-                labelText: "Search",
+                labelText: "Search".tr(),
                 border: OutlineInputBorder(
                   borderSide: new BorderSide(color: Colors.red),
                 ),
@@ -134,7 +135,7 @@ class _BloodDState extends State<BloodD> {
                 child: Text(
                   "Search",
                   style: TextStyle(color: Colors.white),
-                ),
+                ).tr(),
               ),
             ),
           ),

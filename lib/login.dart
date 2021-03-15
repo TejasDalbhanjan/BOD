@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'Asa.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'homepage.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
@@ -65,7 +66,7 @@ class LoginPageState extends State<LoginPage> {
                         return null;
                       },
                       decoration: InputDecoration(
-                          labelText: 'EmailId -',
+                          labelText: 'Email_id'.tr(),
                           labelStyle: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: MediaQuery.of(context).size.height * 0.03,
@@ -87,7 +88,7 @@ class LoginPageState extends State<LoginPage> {
                         return null;
                       },
                       decoration: InputDecoration(
-                        labelText: 'Password -',
+                        labelText: 'Password'.tr(),
                         labelStyle: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: MediaQuery.of(context).size.height * 0.03,
@@ -123,13 +124,13 @@ class LoginPageState extends State<LoginPage> {
                       elevation: 8.0,
                       child: Center(
                         child: Text(
-                          'LOGIN',
+                          'Log_IN',
                           style: TextStyle(
                             fontSize: MediaQuery.of(context).size.height * 0.03,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
-                        ),
+                        ).tr(),
                       ),
                     ),
                   ),
@@ -147,7 +148,7 @@ class LoginPageState extends State<LoginPage> {
                             );
                           },
                           child: Text(
-                            'New Registration ',
+                            'New_reg',
                             style: TextStyle(
                               color: Colors.redAccent,
                               fontWeight: FontWeight.bold,
@@ -156,7 +157,7 @@ class LoginPageState extends State<LoginPage> {
                               decoration: TextDecoration.underline,
                               textBaseline: TextBaseline.alphabetic,
                             ),
-                          ),
+                          ).tr(),
                         ),
                         SizedBox(
                             width: MediaQuery.of(context).size.width * 0.43),
@@ -167,7 +168,7 @@ class LoginPageState extends State<LoginPage> {
                             }
                           },
                           child: Text(
-                            'Forgot Password',
+                            'Forgot_p',
                             style: TextStyle(
                               color: Colors.redAccent,
                               fontWeight: FontWeight.bold,
@@ -176,28 +177,16 @@ class LoginPageState extends State<LoginPage> {
                               decoration: TextDecoration.underline,
                               textBaseline: TextBaseline.alphabetic,
                             ),
-                          ),
+                          ).tr(),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.045),
-                  _buildDivider(),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.045),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    height: MediaQuery.of(context).size.height * 0.065,
-                    child: SignInButton(
-                      Buttons.Google,
-                      elevation: 8.0,
-                      text: ' LOGIN WITH GOOGLE',
-                      onPressed: () async {
-                        signInWithGoogle();
-                      },
-                    ),
-                  ),
                 ],
               ),
+            ),
+            SizedBox(
+              height: 30,
             ),
           ],
         ),

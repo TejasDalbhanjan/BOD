@@ -1,0 +1,86 @@
+{
+    "Log_IN": "LOGIN" ,
+    "Setting":"Settings",
+    "Edit_p":"Edit Profile",
+    "Email_id":"Email-ID",
+    "Password":"Password",
+    "Forgot_p":"Forgot Password",
+    "New_reg":"New Registration",
+    
+    "Donor":"Donor",
+    "name":"Name",
+    "ConfirmP":"Confirm Password",
+    "Donate":"Donate",
+    "HealthH":"Health History",
+    "Adharn":"AdharCard Number",
+    "Age":"Age",
+    "DetailsOD":"Details Of Donor",
+    "Ad":"Address",
+    "Request":"Request",
+
+
+    "DetailsHH":"DETAILS OF HOSPITALS/BB",
+    "nameoHH":"Name of Hospital/Blood Bank",
+    "adHH":"Address of Hospital/Blood Bank",
+    "Certificate":"Certificate",
+    "LN":"License Number",
+    "Submit":"Submit",
+
+
+    "Ep":"Edit Profile",
+    "PhoneN":"Phone Number",
+    "Update":"Update",
+    "CL":"Choose Your language",
+
+    "Home":"Home",
+    "Aboutu":"About Us",
+    "QrCode":"QrCode",
+    "Logout":"Logout",
+
+    "Register":"Register",
+    "AsaD":"As a Donor",
+    "AsaH":"As Hospital/Blood Bank",
+    "Blood":"BLOOD",
+    "SelectType":"Select Type",
+    "Select":"Select",
+    "Sb":"Select Blood Group:",
+    "SearchLoc":"Search for Location",
+    "CurrentLoc":"Current location",
+    "Search":"Search",
+
+
+    "Accept":"Accept",
+    "Decline":"Decline",
+
+
+    "DA":"Delete Account",
+    "Delete":"Delete",
+
+
+    "Profile":"Profile",
+
+
+    "Organ":"Organ",
+    "SelectOT":"Select Organ Type",
+
+    "Db":"Donate Blood",
+    "SearchH":"Search for BB/Hospital",
+
+    "Changep":"Change Password",
+    "ChangeL":"Change Language",
+    "NotifyS":"Notification Settings",
+    "ReciveNotify":"Received notification",
+    "ReciveApp":"Received App Updates",
+
+    "NewPassword":"New Password",
+    "CurrentPassword":"Current Password",
+    "ChangePassword":"Change Password",
+
+    "Hospital":"Hospital"
+
+
+
+
+
+
+}

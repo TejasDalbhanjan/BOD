@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dd.dart';
 import 'TC.dart';
+import 'appD.dart';
 import 'settings.dart';
 import 'miniHP.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'map.dart';
 
 class BottomNB extends StatefulWidget {
   final User user;
@@ -15,7 +18,7 @@ class BottomNB extends StatefulWidget {
 
 class _BottomNBState extends State<BottomNB> {
   List<Widget> _list = [
-    Homep(),
+    Mapp(),
     Dd(),
     TC(),
     Set(),
@@ -24,6 +27,7 @@ class _BottomNBState extends State<BottomNB> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: ADrawer(),
       resizeToAvoidBottomPadding: false,
       body: _list[_index],
       bottomNavigationBar: BottomNavigationBar(
@@ -36,22 +40,22 @@ class _BottomNBState extends State<BottomNB> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: ('Home'),
+            label: ('Home').tr(),
             backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.request_page),
-            label: ('Request'),
+            label: ('Request').tr(),
             backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            label: ('Search'),
+            label: ('Search').tr(),
             backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: ('Profile'),
+            label: ('Profile').tr(),
             backgroundColor: Colors.white,
           ),
         ],

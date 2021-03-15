@@ -1,8 +1,7 @@
-//import 'package:BOD/appD.dart';
 import 'package:flutter/material.dart';
 import 'donorf.dart';
-//import 'seekerf.dart';
 import 'BB&H.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class Asa extends StatefulWidget {
   State createState() => new _LoginasState();
@@ -12,7 +11,7 @@ class _LoginasState extends State<Asa> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: Text('Register'),
+        title: Text('Register').tr(),
         backgroundColor: Colors.red,
       ),
       body: Center(
@@ -30,7 +29,7 @@ class _LoginasState extends State<Asa> {
                 _push(context, Donorf());
               },
               child: Text(
-                "As a Donor",
+                "AsaD".tr(),
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -55,7 +54,7 @@ class _LoginasState extends State<Asa> {
                 );
               },
               child: Text(
-                "As Hospital/Blood Bank",
+                "AsaH".tr(),
                 style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,

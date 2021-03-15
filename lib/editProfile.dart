@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'db.dart';
 
 class Editp extends StatefulWidget {
@@ -23,7 +24,7 @@ class _EditpState extends State<Editp> {
     return Scaffold(
       key: _scaffoldkey,
       appBar: AppBar(
-        title: Text("Edit Profile"),
+        title: Text("Ep").tr(),
       ),
       body: Container(
         padding: EdgeInsets.all(10),
@@ -44,7 +45,7 @@ class _EditpState extends State<Editp> {
                     });
                   },
                 ),
-                labelText: "Email-Id",
+                labelText: "Email_id".tr(),
                 hintText: email,
                 floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
@@ -56,7 +57,7 @@ class _EditpState extends State<Editp> {
               readOnly: editphone,
               decoration: InputDecoration(
                 alignLabelWithHint: true,
-                labelText: "Phone Number",
+                labelText: "PhoneN".tr(),
                 floatingLabelBehavior: FloatingLabelBehavior.always,
                 suffixIcon: IconButton(
                   icon: Icon(Icons.edit),
@@ -81,7 +82,7 @@ class _EditpState extends State<Editp> {
                           content: Text("Successfully Updated"),
                         )));
               },
-              child: Text("Update"),
+              child: Text("Update").tr(),
             )
           ],
         ),

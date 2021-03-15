@@ -2,7 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 //import 'seeker.dart';
 import 'db.dart';
 import 'homepage.dart';
@@ -76,8 +76,8 @@ class DonorfState extends State<Donorf> {
 
     return Scaffold(
         key: _scaffoldkey,
-        appBar: AppBar(
-            title: Text("DETAILS OF DONOR"), backgroundColor: Colors.red),
+        appBar:
+            AppBar(title: Text("DetailsOD").tr(), backgroundColor: Colors.red),
         //resizeToAvoidBottomPadding: false,
         body: Form(
           key: _formKey,
@@ -104,7 +104,7 @@ class DonorfState extends State<Donorf> {
                                 child: TextFormField(
                                   controller: _displayName,
                                   decoration: InputDecoration(
-                                      labelText: 'Name -',
+                                      labelText: 'name'.tr(),
                                       labelStyle: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
@@ -133,7 +133,7 @@ class DonorfState extends State<Donorf> {
                                   textInputAction: TextInputAction.next,
                                   onEditingComplete: () => node.nextFocus(),
                                   decoration: InputDecoration(
-                                      labelText: 'EmailId -',
+                                      labelText: 'Email_Id'.tr(),
                                       labelStyle: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
@@ -153,7 +153,7 @@ class DonorfState extends State<Donorf> {
                                   controller: _addController,
                                   maxLines: 2,
                                   decoration: InputDecoration(
-                                      labelText: 'Address -',
+                                      labelText: 'Ad'.tr(),
                                       labelStyle: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
@@ -175,7 +175,7 @@ class DonorfState extends State<Donorf> {
                                   textInputAction: TextInputAction.next,
                                   onEditingComplete: () => node.nextFocus(),
                                   decoration: InputDecoration(
-                                      labelText: 'AdharCard Number -',
+                                      labelText: 'Adharn'.tr(),
                                       labelStyle: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
@@ -195,7 +195,7 @@ class DonorfState extends State<Donorf> {
                                   },
                                   controller: _ageController,
                                   decoration: InputDecoration(
-                                      labelText: 'Age -',
+                                      labelText: 'Age'.tr(),
                                       labelStyle: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
@@ -216,7 +216,7 @@ class DonorfState extends State<Donorf> {
                                   textInputAction: TextInputAction.next,
                                   onEditingComplete: () => node.nextFocus(),
                                   decoration: InputDecoration(
-                                    labelText: 'Password -',
+                                    labelText: 'Password'.tr(),
                                     labelStyle: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -239,7 +239,7 @@ class DonorfState extends State<Donorf> {
                                   },
                                   decoration: InputDecoration(
                                     errorText: _errorpass,
-                                    labelText: 'Confirm Password -',
+                                    labelText: 'ConfirmP'.tr(),
                                     labelStyle: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
@@ -254,7 +254,7 @@ class DonorfState extends State<Donorf> {
                                 child: Row(
                                   children: [
                                     Text(
-                                      'Health History -',
+                                      'HealthH',
                                       semanticsLabel: "Upload Image",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
@@ -297,13 +297,13 @@ class DonorfState extends State<Donorf> {
                                   elevation: 8.0,
                                   child: Center(
                                     child: Text(
-                                      'DONATE',
+                                      'Donate',
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                       ),
-                                    ),
+                                    ).tr(),
                                   ),
                                 ),
                               ),

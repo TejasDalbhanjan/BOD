@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'appD.dart';
 import 'Blood.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class OrganD extends StatefulWidget {
   @override
@@ -18,7 +19,7 @@ class _OrganDState extends State<OrganD> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: Text('ORGAN'),
+        title: Text('Organ').tr(),
         backgroundColor: Colors.red,
       ),
       drawer: ADrawer(),
@@ -30,11 +31,11 @@ class _OrganDState extends State<OrganD> {
           ),
           DropdownButtonFormField<String>(
             decoration: InputDecoration(
-              labelText: "Select Type",
+              labelText: "SelectType".tr(),
             ),
             elevation: 4,
             hint: Container(
-              child: Text("Select"),
+              child: Text("Select").tr(),
             ),
             items: select.map((String select) {
               return DropdownMenuItem<String>(
@@ -59,14 +60,14 @@ class _OrganDState extends State<OrganD> {
             height: 10,
           ),
           Text(
-            "Select Organ Type:",
+            "SelectOT".tr(),
             textAlign: TextAlign.left,
           ),
           DropdownButtonFormField<String>(
-            decoration: InputDecoration(labelText: "Organ"),
+            decoration: InputDecoration(labelText: "Organ".tr()),
             elevation: 4,
             hint: Container(
-              child: Text("Organ"),
+              child: Text("Organ").tr(),
             ),
             items: organ.map((String organ) {
               return DropdownMenuItem<String>(
@@ -87,9 +88,9 @@ class _OrganDState extends State<OrganD> {
           Row(
             children: [
               Text(
-                "Search for Location:",
+                "SearchLoc",
                 textAlign: TextAlign.left,
-              ),
+              ).tr(),
               SizedBox(
                 width: 190,
               ),
@@ -97,12 +98,12 @@ class _OrganDState extends State<OrganD> {
                 radius: 10,
                 onTap: () {},
                 child: Text(
-                  "Current location",
+                  "CurrentLoc",
                   style: TextStyle(
                     decoration: TextDecoration.underline,
                     color: Colors.red,
                   ),
-                ),
+                ).tr(),
               ),
             ],
           ),
@@ -112,7 +113,7 @@ class _OrganDState extends State<OrganD> {
           Container(
             child: TextField(
               decoration: InputDecoration(
-                labelText: "Search",
+                labelText: "Search".tr(),
                 border: OutlineInputBorder(
                   borderSide: new BorderSide(color: Colors.red),
                 ),
@@ -128,7 +129,7 @@ class _OrganDState extends State<OrganD> {
               child: RaisedButton(
                 onPressed: () {},
                 child: Text(
-                  "Search",
+                  "Search".tr(),
                   style: TextStyle(color: Colors.white),
                 ),
                 color: Colors.red[500],
