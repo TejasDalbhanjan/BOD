@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 //import 'Asa.dart';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'login.dart';
+import 'homepage.dart';
+
+List<String> finalcredential;
 
 void main() {
   runApp(MyApp());
@@ -25,9 +30,28 @@ class SplashS extends StatefulWidget {
 class _SplashSState extends State<SplashS> {
   @override
   void initState() {
+    getValidationData().whenComplete(() async {
+      Timer(
+          Duration(seconds: 2),
+          () => Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      (finalcredential == null ? LoginPage() : BottomNB()),
+                ),
+              ));
+    });
     super.initState();
-    Timer(
-        Duration(seconds: 2), () => Navigator.pushNamed(context, "/LoginPage"));
+  }
+
+  Future getValidationData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    setState(() {
+      var obtainedcredential = pref.getStringList('credentials');
+      finalcredential = obtainedcredential;
+      print(obtainedcredential);
+    });
+    print(finalcredential);
   }
 
   Widget build(BuildContext context) {

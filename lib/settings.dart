@@ -1,16 +1,39 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:BOD/db.dart';
+
 import 'changeL.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'update_P.dart';
 import 'editProfile.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'delete.dart';
 
-class Set extends StatelessWidget {
-  //FirebaseAuth _auth = FirebaseAuth.instance;
+class Set extends StatefulWidget {
+  @override
+  _SetState createState() => _SetState();
+}
+
+class _SetState extends State<Set> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  final userCollection = FirebaseFirestore.instance.collection('user');
+  QuerySnapshot name;
+
+  @override
+  void initState() {
+    super.initState();
+    Db().getUserdata().then((value) {
+      setState(() {
+        name = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final uid = _auth.currentUser.uid;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -19,16 +42,6 @@ class Set extends StatelessWidget {
           'Setting',
           style: TextStyle(color: Colors.white),
         ).tr(),
-        actions: [
-          Padding(
-              padding: EdgeInsets.only(
-                  right: MediaQuery.of(context).size.width * 0.01)),
-          IconButton(
-              icon: Icon(Icons.qr_code_scanner_sharp),
-              onPressed: () async {
-                //await _scan();
-              })
-        ],
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Stack(
@@ -40,23 +53,27 @@ class Set extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Card(
-                    elevation: 8.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                  elevation: 8.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  margin: const EdgeInsets.all(8.0),
+                  color: Colors.redAccent,
+                  semanticContainer: false,
+                  child: Container(
+                    child: Row(
+                      children: [
+                        getProfileImage(),
+                        Column(
+                          children: [
+                            getProfileemail(),
+                            // Text(name.docs(uid)),
+                          ],
+                        )
+                      ],
                     ),
-                    margin: const EdgeInsets.all(8.0),
-                    color: Colors.redAccent,
-                    child: ListTile(
-                      onTap: () {},
-                      title: Text(
-                        'abc',
-                        style: TextStyle(color: Colors.redAccent),
-                      ),
-                      leading: CircleAvatar(
-                          //backgroundImage: CachedNetworkImageProvider(avatars[0]),
-
-                          ),
-                    )),
+                  ),
+                ),
                 Card(
                   elevation: 4.0,
                   margin: const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 16.0),
@@ -144,10 +161,42 @@ class Set extends StatelessWidget {
     );
   }
 
+  getProfileImage() {
+    if (_auth.currentUser.photoURL != null) {
+      return Image.network(_auth.currentUser.photoURL, height: 100, width: 100);
+    } else {
+      return Icon(Icons.account_circle, size: 100);
+    }
+  }
+
+  getProfileemail() {
+    if (_auth.currentUser.email != null) {
+      return Text(_auth.currentUser.email);
+    } else {
+      return Text("User@user.com");
+    }
+  }
+
   Container _buildDivider() {
     return Container(
       height: 1.0,
       color: Colors.black,
     );
+  }
+
+  Stream<QuerySnapshot> get users {
+    return userCollection.snapshots();
+  }
+
+  getuserInfo() async {
+    User user = _auth.currentUser;
+    final uid = user.uid;
+    try {
+      DocumentSnapshot ds = await userCollection.doc(uid).get();
+      String name = ds.get('name');
+      return name;
+    } catch (e) {
+      return (print(e.toString()));
+    }
   }
 }

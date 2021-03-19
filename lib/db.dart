@@ -9,8 +9,9 @@ class Db {
 
   final CollectionReference hospitalbloodbank =
       FirebaseFirestore.instance.collection("hospital");
+
   Future<void> createUserData(String name, String email, String address,
-      String age, String adhar, String uid) async {
+      String age, String adhar, String coordinates, String uid) async {
     return await user.doc(uid).set({
       'uid': uid,
       'name': name,
@@ -18,6 +19,7 @@ class Db {
       'address': address,
       'age': age,
       'adhar': adhar,
+      'Co-ordinates': coordinates
     });
   }
 
@@ -69,5 +71,9 @@ class Db {
         .catchError((e) {
       print("error");
     });
+  }
+
+  getUserdata() async {
+    return FirebaseFirestore.instance.collection('user').get();
   }
 }

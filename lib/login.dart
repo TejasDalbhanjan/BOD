@@ -1,10 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'Asa.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'homepage.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   State createState() => new LoginPageState();
@@ -12,14 +12,12 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage> {
   bool _secureText = true;
-  //String _email;
   FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
   final GlobalKey<ScaffoldState> _scaffoldkey = new GlobalKey<ScaffoldState>();
-
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passController = TextEditingController();
+
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
     return Scaffold(
@@ -113,6 +111,10 @@ class LoginPageState extends State<LoginPage> {
                     height: MediaQuery.of(context).size.height * 0.064,
                     child: MaterialButton(
                       onPressed: () async {
+                        final SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                        pref.setStringList('credentials',
+                            [_emailController.text, _passController.text]);
                         signInWithEmailAndPassword();
                       },
                       color: Colors.red,
@@ -138,7 +140,7 @@ class LoginPageState extends State<LoginPage> {
                   Container(
                     padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         InkWell(
                           onTap: () {
@@ -207,18 +209,6 @@ class LoginPageState extends State<LoginPage> {
     return _auth.sendPasswordResetEmail(email: email);
   }
 
-  // GOOGLE
-  Future<UserCredential> signInWithGoogle() async {
-    final GoogleSignInAccount account = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication _googleAuth = await account.authentication;
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      idToken: _googleAuth.idToken,
-      accessToken: _googleAuth.accessToken,
-    );
-    UserCredential user = await _auth.signInWithCredential(credential);
-    return user;
-  }
-
   void signInWithEmailAndPassword() async {
     try {
       final User user = (await _auth.signInWithEmailAndPassword(
@@ -227,7 +217,8 @@ class LoginPageState extends State<LoginPage> {
       if (!user.emailVerified) {
         await user.sendEmailVerification();
       }
-      Navigator.of(context).push(MaterialPageRoute(
+
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (_) => BottomNB(
                 user: user,
               )));

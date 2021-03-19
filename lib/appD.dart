@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'settings.dart';
 import 'package:qrscans/qrscan.dart' as scanner;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'login.dart';
 import 'db.dart';
 import 'qr.dart';
@@ -26,7 +28,7 @@ class ADrawerState extends State<ADrawer> {
             decoration: BoxDecoration(
               color: Colors.red[300],
             ),
-            accountName: getProfilename(),
+            accountName: null,
             accountEmail: getProfileemail(),
             currentAccountPicture: getProfileImage(),
             otherAccountsPictures: [
@@ -91,6 +93,9 @@ class ADrawerState extends State<ADrawer> {
             title: Text('Logout').tr(),
             hoverColor: Colors.red,
             onTap: () async {
+              final SharedPreferences pref =
+                  await SharedPreferences.getInstance();
+              await pref.clear();
               await Db()
                   .signOut()
                   .whenComplete(() => Navigator.of(context).pushAndRemoveUntil(
@@ -118,17 +123,6 @@ class ADrawerState extends State<ADrawer> {
       return Text(_auth.currentUser.email);
     } else {
       return Text("User@user.com");
-    }
-  }
-
-  getProfilename() {
-    User user = _auth.currentUser;
-    final id = user.uid;
-
-    if (_auth.currentUser.displayName != null) {
-      return Text(_auth.currentUser.displayName);
-    } else {
-      return Text("Name");
     }
   }
 

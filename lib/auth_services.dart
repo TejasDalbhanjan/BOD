@@ -1,12 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  final userCollection = FirebaseFirestore.instance.collection('user');
   Stream<String> get onAuthStateChanged => _firebaseAuth.authStateChanges().map(
         (User user) => user?.uid,
       );
@@ -19,6 +21,24 @@ class AuthService {
   // GET CURRENT USER
   Future getCurrentUser() async {
     return _firebaseAuth.currentUser;
+  }
+
+  //Get user Stream(Database)
+
+  Stream<QuerySnapshot> get users {
+    return userCollection.snapshots();
+  }
+
+  Future getuserInfo() async {
+    User user = _firebaseAuth.currentUser;
+    final uid = user.uid;
+    try {
+      DocumentSnapshot ds = await userCollection.doc(uid).get();
+      String name = ds.get('name');
+      return name;
+    } catch (e) {
+      return (print(e.toString()));
+    }
   }
 
   getProfileImage() {
