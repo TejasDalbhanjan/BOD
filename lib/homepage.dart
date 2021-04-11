@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:BOD/camp.dart';
+import 'db.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dd.dart';
@@ -17,16 +18,33 @@ class BottomNB extends StatefulWidget {
   _BottomNBState createState() => _BottomNBState();
 }
 
+final _auth = FirebaseAuth.instance;
+final id = _auth.currentUser.uid;
+
 class _BottomNBState extends State<BottomNB> {
+  bool state = false;
+
   List<Widget> _list = [
     Mapp(),
     Dd(),
+    DateTimePickerWidget(),
     TC(),
     Set(),
   ];
   final GlobalKey<ScaffoldState> _globalKey = new GlobalKey<ScaffoldState>();
 
   int _index = 0;
+
+  Future<bool> hospital() {
+    if (Db().gethospital(id) == true) {
+      state = true;
+      return Future.value(true);
+    } else {
+      state = false;
+      return Future.value(false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -54,6 +72,11 @@ class _BottomNBState extends State<BottomNB> {
               backgroundColor: Colors.white,
             ),
             BottomNavigationBarItem(
+              icon: Icon(Icons.add_business_rounded),
+              label: ('Camp'),
+              backgroundColor: Colors.white,
+            ),
+            BottomNavigationBarItem(
               icon: Icon(Icons.search),
               label: ('Search').tr(),
               backgroundColor: Colors.white,
@@ -72,16 +95,17 @@ class _BottomNBState extends State<BottomNB> {
       ),
       onWillPop: () async {
         if (_globalKey.currentState.isDrawerOpen) {
-          Navigator.of(context).pop(); // closes the drawer if opened
+          Navigator.of(context).pop();
           return Future.value(false);
         } else {
-          if (_index == 0) _onBackPressed();
+          if (_index == 0) {
+            _onBackPressed();
+          }
           //return true;
           setState(() {
             _index = 0;
           });
-
-          return Future.value(true);
+          return false;
         }
       },
     );

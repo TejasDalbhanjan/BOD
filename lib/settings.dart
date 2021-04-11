@@ -32,8 +32,6 @@ class _SetState extends State<Set> {
 
   @override
   Widget build(BuildContext context) {
-    final uid = _auth.currentUser.uid;
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -58,51 +56,54 @@ class _SetState extends State<Set> {
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   margin: const EdgeInsets.all(8.0),
-                  color: Colors.redAccent,
+                  color: Colors.red[200],
                   semanticContainer: false,
                   child: Container(
-                    child: Row(
+                    child: Center(
+                        child: Row(
                       children: [
                         getProfileImage(),
+                        SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.15),
                         Column(
-                          children: [
-                            getProfileemail(),
-                            // Text(name.docs(uid)),
-                          ],
-                        )
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [getuserInfo(), getProfileemail()],
+                        ),
                       ],
-                    ),
+                    )),
                   ),
                 ),
                 Card(
-                  elevation: 4.0,
-                  margin: const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 16.0),
+                  elevation: 8.0,
+                  margin: const EdgeInsets.all(8.0),
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)),
-                  child: Column(children: <Widget>[
-                    ListTile(
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
                         leading: Icon(Icons.edit_off, color: Colors.redAccent),
                         title: Text('Ep').tr(),
                         trailing: Icon(Icons.keyboard_arrow_right),
                         onTap: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => Editp()));
-                        }),
-                    _buildDivider(),
-                    ListTile(
-                        leading:
-                            Icon(Icons.lock_outline, color: Colors.redAccent),
-                        title: Text('Changep').tr(),
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Update()));
-                        }),
-                    _buildDivider(),
-                    ListTile(
+                        },
+                      ),
+                      _buildDivider(),
+                      ListTile(
+                          leading:
+                              Icon(Icons.lock_outline, color: Colors.redAccent),
+                          title: Text('Changep').tr(),
+                          trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Update()));
+                          }),
+                      _buildDivider(),
+                      ListTile(
                         leading: Icon(Icons.language, color: Colors.redAccent),
                         title: Text('ChangeL').tr(),
                         trailing: Icon(Icons.keyboard_arrow_right),
@@ -111,8 +112,10 @@ class _SetState extends State<Set> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ChangeL()));
-                        }),
-                    ListTile(
+                        },
+                      ),
+                      _buildDivider(),
+                      ListTile(
                         leading: Icon(Icons.delete, color: Colors.redAccent),
                         title: Text('DA').tr(),
                         trailing: Icon(Icons.keyboard_arrow_right),
@@ -121,8 +124,10 @@ class _SetState extends State<Set> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => Delete()));
-                        })
-                  ]),
+                        },
+                      )
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: (20.0),
@@ -188,15 +193,17 @@ class _SetState extends State<Set> {
     return userCollection.snapshots();
   }
 
-  getuserInfo() async {
-    User user = _auth.currentUser;
-    final uid = user.uid;
-    try {
-      DocumentSnapshot ds = await userCollection.doc(uid).get();
-      String name = ds.get('name');
-      return name;
-    } catch (e) {
-      return (print(e.toString()));
-    }
+  getuserInfo() {
+    final id = _auth.currentUser.uid;
+    return StreamBuilder(
+        stream:
+            FirebaseFirestore.instance.collection('user').doc(id).snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return Text("Loading ...Please wait");
+          return Text(
+            snapshot.data['name'],
+            style: TextStyle(fontWeight: FontWeight.bold),
+          );
+        });
   }
 }

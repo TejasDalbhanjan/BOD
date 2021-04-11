@@ -41,7 +41,7 @@ class LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   Center(
                     child: Text(
-                      "BOP",
+                      "BOD",
                       style: TextStyle(
                           decoration: TextDecoration.underline,
                           fontSize: MediaQuery.of(context).size.height * 0.1,
@@ -50,7 +50,7 @@ class LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                    padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                     child: TextFormField(
                       controller: _emailController,
                       textInputAction: TextInputAction.next,
@@ -70,7 +70,7 @@ class LoginPageState extends State<LoginPage> {
                             fontSize: MediaQuery.of(context).size.height * 0.03,
                           )),
                       keyboardType: TextInputType.emailAddress,
-                      //onSaved: (String val) => setState(() => _email = val),
+                      //onSaved: (String val) => setState(() => _email = val), l
                     ),
                   ),
                   Container(
@@ -193,15 +193,6 @@ class LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
-    );
-  }
-
-  Container _buildDivider() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 15.0),
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.0019,
-      color: Colors.grey,
     );
   }
 

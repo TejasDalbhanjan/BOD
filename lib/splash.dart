@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'BOP',
+      title: 'BOD',
       debugShowCheckedModeBanner: false,
       home: SplashS(),
     );
@@ -65,7 +65,7 @@ class _SplashSState extends State<SplashS> {
               children: [
                 CircleAvatar(
                     backgroundColor: Colors.red,
-                    radius: 60,
+                    radius: MediaQuery.of(context).size.height * 0.1,
                     child: Icon(
                       Icons.ac_unit_rounded,
                       color: Colors.black,

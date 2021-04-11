@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'Blood.dart';
 import 'Organ.dart';
@@ -11,6 +13,13 @@ class Dd extends StatefulWidget {
 class DropState extends State<Dd> {
   String selectedoptions = "-";
   final List<String> select = ["-", "Blood", "Organ"];
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future getdata() async {
+    QueryDocumentSnapshot qn =
+        await FirebaseFirestore.instance.collection('user').doc().get();
+    return qn;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,25 +32,28 @@ class DropState extends State<Dd> {
       body: DropdownButtonFormField<String>(
         decoration: InputDecoration(
           labelText: "SelectType".tr(),
+          border: OutlineInputBorder(
+            borderSide: new BorderSide(color: Colors.red),
+          ),
         ),
-        elevation: 4,
+        elevation: 2,
         hint: Container(
           child: Text("Select").tr(),
         ),
+        value: selectedoptions,
         items: select.map((String select) {
           return DropdownMenuItem<String>(
             child: Text(select),
             value: select,
           );
         }).toList(),
-        value: selectedoptions,
         onChanged: (value) {
           setState(() {
             if (value == "Blood") {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context, MaterialPageRoute(builder: (context) => BloodD()));
             } else if (value == "Organ") {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context, MaterialPageRoute(builder: (context) => OrganD()));
             }
           });

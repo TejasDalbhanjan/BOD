@@ -1,25 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geocoder/model.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 
 class Db {
   final CollectionReference user =
       FirebaseFirestore.instance.collection("user");
+  final CollectionReference camp =
+      FirebaseFirestore.instance.collection("camp");
 
   final CollectionReference hospitalbloodbank =
       FirebaseFirestore.instance.collection("hospital");
 
-  Future<void> createUserData(String name, String email, String address,
-      String age, String adhar, String coordinates, String uid) async {
+  Future<void> createUserData(
+      String name,
+      String email,
+      String address,
+      String age,
+      String phone,
+      String bloodg,
+      String adhar,
+      GeoPoint location,
+      String uid) async {
     return await user.doc(uid).set({
       'uid': uid,
       'name': name,
       'email': email,
       'address': address,
       'age': age,
+      'Phone-No': phone,
+      'Blood-Group': bloodg,
       'adhar': adhar,
-      'Co-ordinates': coordinates
+      'location': location,
     });
   }
 
@@ -30,6 +45,16 @@ class Db {
       'name': name,
       'address': address,
       'Licence_No': licenseno,
+    });
+  }
+
+  Future<void> createCampdata(
+      String name, String address, DateTime date, String uid) async {
+    return await camp.doc(uid).set({
+      'uid': uid,
+      'name': name,
+      'address': address,
+      'Date- Time': date,
     });
   }
 
@@ -75,5 +100,9 @@ class Db {
 
   getUserdata() async {
     return FirebaseFirestore.instance.collection('user').get();
+  }
+
+  gethospital(String id) async {
+    return FirebaseFirestore.instance.collection("hospital").doc(id);
   }
 }

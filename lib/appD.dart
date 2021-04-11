@@ -1,3 +1,4 @@
+import 'package:BOD/chatbot.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'settings.dart';
@@ -28,7 +29,7 @@ class ADrawerState extends State<ADrawer> {
             decoration: BoxDecoration(
               color: Colors.red[300],
             ),
-            accountName: null,
+            accountName: getname(),
             accountEmail: getProfileemail(),
             currentAccountPicture: getProfileImage(),
             otherAccountsPictures: [
@@ -75,7 +76,8 @@ class ADrawerState extends State<ADrawer> {
             title: Text('Help'),
             hoverColor: Colors.red,
             onTap: () {
-              Navigator.pop(context);
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Chatbot()));
             },
           ),
           _divider(),
@@ -136,5 +138,17 @@ class ADrawerState extends State<ADrawer> {
   Future _scan() async {
     String barcode = await scanner.scan();
     print(barcode);
+  }
+
+  getname() {
+    final id = _auth.currentUser.uid;
+    return StreamBuilder(
+        stream:
+            FirebaseFirestore.instance.collection('user').doc(id).snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return Text("Loading ...Please wait");
+
+          return Text(snapshot.data['name']);
+        });
   }
 }
