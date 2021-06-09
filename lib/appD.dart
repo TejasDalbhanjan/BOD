@@ -1,4 +1,5 @@
 import 'package:BOD/chatbot.dart';
+import 'package:BOD/messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'settings.dart';
@@ -76,8 +77,8 @@ class ADrawerState extends State<ADrawer> {
             title: Text('Help'),
             hoverColor: Colors.red,
             onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Chatbot()));
+              /* Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Message()));*/
             },
           ),
           _divider(),
@@ -135,9 +136,21 @@ class ADrawerState extends State<ADrawer> {
     );
   }
 
+  static var count = 0;
+
   Future _scan() async {
     String barcode = await scanner.scan();
     print(barcode);
+    final id = FirebaseAuth.instance.currentUser.uid;
+    if (barcode.isEmpty) {
+      return;
+    } else {
+      count = count + 1;
+      FirebaseFirestore.instance
+          .collection('user')
+          .doc(id)
+          .update({'Count': count});
+    }
   }
 
   getname() {

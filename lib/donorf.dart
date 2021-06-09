@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -29,8 +30,8 @@ class DonorfState extends State<Donorf> {
   TextEditingController _phoneno = TextEditingController();
   TextEditingController _bloodg = TextEditingController();
   TextEditingController _emailController = TextEditingController();
-  TextEditingController _addController = TextEditingController();
   TextEditingController _passController = TextEditingController();
+  TextEditingController locationController = TextEditingController();
   TextEditingController _confirmpassController = TextEditingController();
   TextEditingController _ageController = TextEditingController();
   TextEditingController _adharController = TextEditingController();
@@ -45,7 +46,6 @@ class DonorfState extends State<Donorf> {
   String _path;
   Map<String, String> _paths;
   TextEditingController _controller = TextEditingController();
-
   String _add;
   String locationMessage = "";
   GeoPoint coordinates;
@@ -53,9 +53,23 @@ class DonorfState extends State<Donorf> {
   void getCurrentLocation() async {
     final position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    List<Placemark> placemark = await Geolocator()
+        .placemarkFromCoordinates(position.latitude, position.longitude);
     setState(() {
       locationMessage = "${position.latitude}, ${position.longitude}";
       coordinates = GeoPoint(position.latitude, position.longitude);
+      locationController.text = placemark[0].name +
+          ", " +
+          placemark[0].thoroughfare +
+          ", " +
+          placemark[0].subLocality +
+          ", " +
+          placemark[0].locality +
+          " - " +
+          placemark[0].postalCode +
+          ", " +
+          placemark[0].administrativeArea;
+      print(locationController.text);
       print(coordinates);
     });
   }
@@ -125,6 +139,7 @@ class DonorfState extends State<Donorf> {
               ),
               Container(
                 height: MediaQuery.of(context).size.height * 0.8,
+                width: MediaQuery.of(context).size.width * 1,
                 child: SingleChildScrollView(
                   padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -136,11 +151,14 @@ class DonorfState extends State<Donorf> {
                         child: TextFormField(
                           controller: _displayName,
                           decoration: InputDecoration(
-                              labelText: 'name'.tr(),
-                              labelStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              )),
+                            labelText: 'name'.tr(),
+                            labelStyle: GoogleFonts.lato(
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
                           validator: (value) {
                             if (value.isEmpty) {
                               return 'Enter full name!';
@@ -165,30 +183,41 @@ class DonorfState extends State<Donorf> {
                           textInputAction: TextInputAction.next,
                           onEditingComplete: () => node.nextFocus(),
                           decoration: InputDecoration(
-                              labelText: 'Email_id'.tr(),
-                              labelStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              )),
+                            labelText: 'Email_id'.tr(),
+                            labelStyle: GoogleFonts.lato(
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
                           keyboardType: TextInputType.emailAddress,
                         ),
                       ),
                       Container(
                         padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
                         child: TextFormField(
+                          controller: locationController,
                           validator: (value) {
                             if (value.isEmpty) {
                               return 'Enter address!';
                             }
                             return null;
                           },
-                          initialValue: _add,
                           decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              icon: Icon(Icons.location_on),
+                              onPressed: () {
+                                getCurrentLocation();
+                              },
+                            ),
                             alignLabelWithHint: true,
                             labelText: 'Ad'.tr(),
-                            labelStyle: TextStyle(
+                            labelStyle: GoogleFonts.lato(
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black,
+                              fontSize: 16,
                             ),
                           ),
                           keyboardType: TextInputType.multiline,
@@ -207,11 +236,14 @@ class DonorfState extends State<Donorf> {
                           textInputAction: TextInputAction.next,
                           onEditingComplete: () => node.nextFocus(),
                           decoration: InputDecoration(
-                              labelText: 'Adharn'.tr(),
-                              labelStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              )),
+                            labelText: 'Adharn'.tr(),
+                            labelStyle: GoogleFonts.lato(
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
                           keyboardType: TextInputType.number,
                         ),
                       ),
@@ -226,11 +258,14 @@ class DonorfState extends State<Donorf> {
                           },
                           controller: _ageController,
                           decoration: InputDecoration(
-                              labelText: 'Age'.tr(),
-                              labelStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              )),
+                            labelText: 'Age'.tr(),
+                            labelStyle: GoogleFonts.lato(
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
                           keyboardType: TextInputType.number,
                         ),
                       ),
@@ -245,11 +280,14 @@ class DonorfState extends State<Donorf> {
                           },
                           controller: _phoneno,
                           decoration: InputDecoration(
-                              labelText: 'Phone Number',
-                              labelStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              )),
+                            labelText: 'Phone Number',
+                            labelStyle: GoogleFonts.lato(
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
                           keyboardType: TextInputType.number,
                         ),
                       ),
@@ -264,11 +302,14 @@ class DonorfState extends State<Donorf> {
                           },
                           controller: _bloodg,
                           decoration: InputDecoration(
-                              labelText: 'Blood Group',
-                              labelStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              )),
+                            labelText: 'Blood Group',
+                            labelStyle: GoogleFonts.lato(
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
                           keyboardType: TextInputType.name,
                         ),
                       ),
@@ -279,9 +320,11 @@ class DonorfState extends State<Donorf> {
                             Text(
                               'Health-History',
                               semanticsLabel: "Upload Image",
-                              style: TextStyle(
+                              style: GoogleFonts.lato(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
+                                fontStyle: FontStyle.italic,
+                                color: Colors.black,
+                                fontSize: 16,
                               ),
                             ),
                             Container(
@@ -329,9 +372,11 @@ class DonorfState extends State<Donorf> {
                           onEditingComplete: () => node.nextFocus(),
                           decoration: InputDecoration(
                             labelText: 'Password'.tr(),
-                            labelStyle: TextStyle(
-                              fontSize: 20,
+                            labelStyle: GoogleFonts.lato(
                               fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black,
+                              fontSize: 16,
                             ),
                           ),
                           obscureText: true,
@@ -352,9 +397,11 @@ class DonorfState extends State<Donorf> {
                           decoration: InputDecoration(
                             errorText: _errorpass,
                             labelText: 'ConfirmP'.tr(),
-                            labelStyle: TextStyle(
-                              fontSize: 20,
+                            labelStyle: GoogleFonts.lato(
                               fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.italic,
+                              color: Colors.black,
+                              fontSize: 16,
                             ),
                           ),
                           obscureText: true,
@@ -389,24 +436,6 @@ class DonorfState extends State<Donorf> {
                           ),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            FlatButton(
-                                onPressed: () {
-                                  getCurrentLocation();
-                                  _add = "${_address?.addressLine}";
-                                  print(_add);
-                                },
-                                color: Colors.green,
-                                child: Text(
-                                    "Pick Your Current Location as Home Address"))
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 30),
                     ],
                   ),
                 ),
@@ -456,8 +485,9 @@ class DonorfState extends State<Donorf> {
     String phone = _phoneno.text;
     String bloodg = _bloodg.text;
 
-    if (_addController.text.isNotEmpty || _addController.text.length >= 8) {
-      add = _addController.text;
+    if (locationController.text.isNotEmpty ||
+        locationController.text.length >= 8) {
+      add = locationController.text;
     } else {
       add = _add;
     }

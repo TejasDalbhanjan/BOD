@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -137,15 +138,17 @@ class BBState extends State<BBFul> {
                                     return null;
                                 },
                                 decoration: InputDecoration(
-                                    labelText: 'nameoHH'.tr(),
-                                    labelStyle: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    )),
+                                  labelText: 'nameoHH'.tr(),
+                                  labelStyle: GoogleFonts.lato(
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                ),
                                 keyboardType: TextInputType.name,
                               ),
                             ),
-                            SizedBox(height: 20),
                             Container(
                               padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
                               child: TextFormField(
@@ -157,15 +160,17 @@ class BBState extends State<BBFul> {
                                     return null;
                                 },
                                 decoration: InputDecoration(
-                                    labelText: 'adHH'.tr(),
-                                    labelStyle: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    )),
+                                  labelText: 'adHH'.tr(),
+                                  labelStyle: GoogleFonts.lato(
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                ),
                                 keyboardType: TextInputType.multiline,
                               ),
                             ),
-                            SizedBox(height: 20),
                             Container(
                               padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
                               child: TextFormField(
@@ -181,11 +186,14 @@ class BBState extends State<BBFul> {
                                 textInputAction: TextInputAction.next,
                                 onEditingComplete: () => node.nextFocus(),
                                 decoration: InputDecoration(
-                                    labelText: 'Email_id'.tr(),
-                                    labelStyle: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    )),
+                                  labelText: 'Email_id'.tr(),
+                                  labelStyle: GoogleFonts.lato(
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                ),
                                 keyboardType: TextInputType.emailAddress,
                               ),
                             ),
@@ -196,9 +204,11 @@ class BBState extends State<BBFul> {
                                   Text(
                                     'Certificate'.tr(),
                                     semanticsLabel: "Upload Image",
-                                    style: TextStyle(
+                                    style: GoogleFonts.lato(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 20,
+                                      fontStyle: FontStyle.italic,
+                                      color: Colors.black,
+                                      fontSize: 16,
                                     ),
                                   ),
                                   Container(
@@ -218,7 +228,6 @@ class BBState extends State<BBFul> {
                                 ],
                               ),
                             ),
-                            SizedBox(height: 20),
                             Container(
                               padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
                               child: TextFormField(
@@ -230,15 +239,17 @@ class BBState extends State<BBFul> {
                                     return null;
                                 },
                                 decoration: InputDecoration(
-                                    labelText: 'LN'.tr(),
-                                    labelStyle: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    )),
+                                  labelText: 'LN'.tr(),
+                                  labelStyle: GoogleFonts.lato(
+                                    fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                ),
                                 keyboardType: TextInputType.number,
                               ),
                             ),
-                            SizedBox(height: 30),
                             Container(
                               padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
                               child: TextFormField(
@@ -253,9 +264,11 @@ class BBState extends State<BBFul> {
                                 onEditingComplete: () => node.nextFocus(),
                                 decoration: InputDecoration(
                                   labelText: 'Password'.tr(),
-                                  labelStyle: TextStyle(
-                                    fontSize: 20,
+                                  labelStyle: GoogleFonts.lato(
                                     fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.black,
+                                    fontSize: 16,
                                   ),
                                 ),
                                 obscureText: true,
@@ -276,15 +289,16 @@ class BBState extends State<BBFul> {
                                 decoration: InputDecoration(
                                   errorText: _errorpass,
                                   labelText: 'ConfirmP'.tr(),
-                                  labelStyle: TextStyle(
-                                    fontSize: 20,
+                                  labelStyle: GoogleFonts.lato(
                                     fontWeight: FontWeight.bold,
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.black,
+                                    fontSize: 16,
                                   ),
                                 ),
                                 obscureText: true,
                               ),
                             ),
-                            SizedBox(height: 20),
                             Container(
                               height: 50,
                               child: MaterialButton(

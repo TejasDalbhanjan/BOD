@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'Blood.dart';
 import 'Organ.dart';
@@ -13,7 +12,6 @@ class Dd extends StatefulWidget {
 class DropState extends State<Dd> {
   String selectedoptions = "-";
   final List<String> select = ["-", "Blood", "Organ"];
-  FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future getdata() async {
     QueryDocumentSnapshot qn =

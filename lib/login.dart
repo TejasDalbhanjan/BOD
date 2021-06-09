@@ -29,10 +29,12 @@ class LoginPageState extends State<LoginPage> {
           fit: StackFit.expand,
           children: <Widget>[
             new Image(
-              image: AssetImage("assets/logo.jpg"),
+              image: AssetImage(
+                "assets/logo.jpg",
+              ),
               fit: BoxFit.fill,
-              color: Colors.black12,
-              colorBlendMode: BlendMode.colorBurn,
+              color: Colors.black.withOpacity(0.1),
+              colorBlendMode: BlendMode.dstATop,
             ),
             Container(
               padding: EdgeInsets.only(
@@ -48,6 +50,9 @@ class LoginPageState extends State<LoginPage> {
                           fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.25,
                   ),
                   Container(
                     padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -66,9 +71,10 @@ class LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(
                           labelText: 'Email_id'.tr(),
                           labelStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: MediaQuery.of(context).size.height * 0.03,
-                          )),
+                              fontWeight: FontWeight.bold,
+                              fontSize:
+                                  MediaQuery.of(context).size.height * 0.03,
+                              color: Colors.black)),
                       keyboardType: TextInputType.emailAddress,
                       //onSaved: (String val) => setState(() => _email = val), l
                     ),
@@ -88,9 +94,9 @@ class LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(
                         labelText: 'Password'.tr(),
                         labelStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: MediaQuery.of(context).size.height * 0.03,
-                        ),
+                            fontWeight: FontWeight.bold,
+                            fontSize: MediaQuery.of(context).size.height * 0.03,
+                            color: Colors.black),
                         suffixIcon: IconButton(
                           icon: Icon(_secureText
                               ? Icons.remove_red_eye
@@ -111,11 +117,16 @@ class LoginPageState extends State<LoginPage> {
                     height: MediaQuery.of(context).size.height * 0.064,
                     child: MaterialButton(
                       onPressed: () async {
-                        final SharedPreferences pref =
-                            await SharedPreferences.getInstance();
-                        pref.setStringList('credentials',
-                            [_emailController.text, _passController.text]);
-                        signInWithEmailAndPassword();
+                        if (formkey.currentState.validate()) {
+                          _scaffoldkey.currentState.showSnackBar(
+                              SnackBar(content: Text("Failed To SignIn")));
+                        } else {
+                          final SharedPreferences pref =
+                              await SharedPreferences.getInstance();
+                          pref.setStringList('credentials',
+                              [_emailController.text, _passController.text]);
+                          signInWithEmailAndPassword();
+                        }
                       },
                       color: Colors.red,
                       highlightColor: Colors.redAccent,
@@ -184,6 +195,20 @@ class LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.15,
+                  ),
+                  Container(
+                    child: Center(
+                      child: InkWell(
+                        child: Text(
+                          "Blood and Organ Donation Management",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        focusColor: Colors.grey,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),

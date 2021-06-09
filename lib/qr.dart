@@ -15,15 +15,16 @@ class _CodeQRState extends State<CodeQR> {
   Widget build(BuildContext context) {
     uid = _auth.currentUser.uid;
     return Scaffold(
-        appBar: new AppBar(
-          title: Text('BOP'),
-          backgroundColor: Colors.red,
+      appBar: new AppBar(
+        title: Text('BOP'),
+        backgroundColor: Colors.red,
+      ),
+      drawer: ADrawer(user: _auth.currentUser),
+      body: Center(
+        child: Container(
+          child: QrImage(data: "$uid", version: QrVersions.auto, size: 200),
         ),
-        drawer: ADrawer(user: _auth.currentUser),
-        body: Center(
-          child: Container(
-            child: QrImage(data: "$uid", version: QrVersions.auto, size: 200),
-          ),
-        ));
+      ),
+    );
   }
 }

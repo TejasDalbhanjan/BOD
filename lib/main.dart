@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'splash.dart';
 import 'login.dart';
 
@@ -22,7 +23,22 @@ var routes = <String, WidgetBuilder>{
   "/LoginPage": (BuildContext context) => LoginPage(),
 };
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    configOneSignel();
+  }
+
+  void configOneSignel() {
+    OneSignal.shared.init('61bd310f-cf42-48f6-9f66-7dbab9bed2f5');
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

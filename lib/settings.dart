@@ -1,12 +1,11 @@
 import 'package:BOD/db.dart';
-
+import 'package:percent_indicator/percent_indicator.dart';
 import 'changeL.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'update_P.dart';
 import 'editProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'delete.dart';
 
@@ -23,11 +22,15 @@ class _SetState extends State<Set> {
   @override
   void initState() {
     super.initState();
-    Db().getUserdata().then((value) {
-      setState(() {
-        name = value;
-      });
-    });
+    Db().getUserdata().then(
+      (value) {
+        setState(
+          () {
+            name = value;
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -46,21 +49,13 @@ class _SetState extends State<Set> {
         fit: StackFit.expand,
         children: [
           SingleChildScrollView(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(5.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Card(
-                  elevation: 8.0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  margin: const EdgeInsets.all(8.0),
-                  color: Colors.red[200],
-                  semanticContainer: false,
-                  child: Container(
-                    child: Center(
-                        child: Row(
+                Container(
+                  child: Center(
+                    child: Row(
                       children: [
                         getProfileImage(),
                         SizedBox(
@@ -70,61 +65,74 @@ class _SetState extends State<Set> {
                           children: [getuserInfo(), getProfileemail()],
                         ),
                       ],
-                    )),
+                    ),
                   ),
                 ),
-                Card(
-                  elevation: 8.0,
-                  margin: const EdgeInsets.all(8.0),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.001,
+                  color: Colors.black,
+                ),
+                Container(
                   color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
                   child: Column(
                     children: <Widget>[
-                      ListTile(
-                        leading: Icon(Icons.edit_off, color: Colors.redAccent),
-                        title: Text('Ep').tr(),
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        onTap: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Editp()));
-                        },
-                      ),
-                      _buildDivider(),
-                      ListTile(
+                      Card(
+                        elevation: 5,
+                        child: ListTile(
                           leading:
-                              Icon(Icons.lock_outline, color: Colors.redAccent),
-                          title: Text('Changep').tr(),
+                              Icon(Icons.edit_off, color: Colors.redAccent),
+                          title: Text('Ep').tr(),
                           trailing: Icon(Icons.keyboard_arrow_right),
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Update()));
-                          }),
-                      _buildDivider(),
-                      ListTile(
-                        leading: Icon(Icons.language, color: Colors.redAccent),
-                        title: Text('ChangeL').tr(),
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ChangeL()));
-                        },
+                                    builder: (context) => Editp()));
+                          },
+                        ),
                       ),
-                      _buildDivider(),
-                      ListTile(
-                        leading: Icon(Icons.delete, color: Colors.redAccent),
-                        title: Text('DA').tr(),
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Delete()));
-                        },
+                      Card(
+                        elevation: 5,
+                        child: ListTile(
+                            leading: Icon(Icons.lock_outline,
+                                color: Colors.redAccent),
+                            title: Text('Changep').tr(),
+                            trailing: Icon(Icons.keyboard_arrow_right),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Update()));
+                            }),
+                      ),
+                      Card(
+                        elevation: 5,
+                        child: ListTile(
+                          leading:
+                              Icon(Icons.language, color: Colors.redAccent),
+                          title: Text('ChangeL').tr(),
+                          trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ChangeL()));
+                          },
+                        ),
+                      ),
+                      Card(
+                        elevation: 5,
+                        child: ListTile(
+                          leading: Icon(Icons.delete, color: Colors.redAccent),
+                          title: Text('DA').tr(),
+                          trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Delete()));
+                          },
+                        ),
                       )
                     ],
                   ),
@@ -132,32 +140,15 @@ class _SetState extends State<Set> {
                 SizedBox(
                   height: (20.0),
                 ),
-                Text(
-                  "NotifyS",
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.red,
+                Center(
+                  child: Container(
+                    child: CircularPercentIndicator(
+                      progressColor: Colors.redAccent,
+                      radius: 5,
+                      percent: 0.8,
+                    ),
                   ),
-                ).tr(),
-                SizedBox(
-                  height: (20.0),
                 ),
-                SwitchListTile(
-                  activeColor: Colors.red,
-                  contentPadding: EdgeInsets.all(0),
-                  value: true,
-                  title: Text("ReciveApp").tr(),
-                  onChanged: null,
-                ),
-                SwitchListTile(
-                  dense: true,
-                  activeColor: Colors.red,
-                  contentPadding: EdgeInsets.all(0),
-                  value: true,
-                  title: Text("ReciveNotify").tr(),
-                  onChanged: (val) {},
-                )
               ],
             ),
           ),
@@ -182,13 +173,6 @@ class _SetState extends State<Set> {
     }
   }
 
-  Container _buildDivider() {
-    return Container(
-      height: 1.0,
-      color: Colors.black,
-    );
-  }
-
   Stream<QuerySnapshot> get users {
     return userCollection.snapshots();
   }
@@ -204,6 +188,17 @@ class _SetState extends State<Set> {
             snapshot.data['name'],
             style: TextStyle(fontWeight: FontWeight.bold),
           );
+        });
+  }
+
+  getcount() {
+    final id = _auth.currentUser.uid;
+    return StreamBuilder(
+        stream:
+            FirebaseFirestore.instance.collection('user').doc(id).snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return Text("Loading ...Please wait");
+          return snapshot.data['Count'];
         });
   }
 }

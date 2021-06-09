@@ -1,13 +1,19 @@
-import 'package:BOD/dd.dart';
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:BOD/places.dart';
 import 'package:BOD/search.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
+import 'BList.dart';
 import 'appD.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'Organ.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:http/http.dart' as http;
 
 class BloodD extends StatefulWidget {
   @override
@@ -18,10 +24,21 @@ class _BloodDState extends State<BloodD> {
   String selectedoptions = "-";
   String selectedoptions2 = "-";
   final _scrollController = ScrollController();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   final List<String> select = ["-", "Blood", "Organ"];
 
   final List<String> blood = ["-", "O+", "O-", "AB+"];
+  @override
+  void initState() {
+    super.initState();
+
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +156,12 @@ class _BloodDState extends State<BloodD> {
                                 labelText: "Search".tr(),
                                 suffixIcon: IconButton(
                                   icon: Icon(Icons.search),
-                                  onPressed: null,
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => View()));
+                                  },
                                 ),
                                 border: OutlineInputBorder(
                                   borderSide: new BorderSide(color: Colors.red),
@@ -171,17 +193,21 @@ class _BloodDState extends State<BloodD> {
                                               data.length,
                                               (index) {
                                                 final place = data[index];
-                                                return ListTile(
-                                                  onTap: () {
-                                                    api.addressController.text =
-                                                        '${place.name},${place.street},${place.locality}, ${place.country}';
-                                                    print(api.addressController
-                                                        .text);
-                                                  },
-                                                  title: Text(
-                                                      '${place.name},${place.street}'),
-                                                  subtitle: Text(
-                                                      '${place.locality},${place.country}'),
+                                                return Card(
+                                                  child: ListTile(
+                                                    onTap: () {
+                                                      api.addressController
+                                                              .text =
+                                                          '${place.name},${place.street},${place.locality}, ${place.country}';
+                                                      print(api
+                                                          .addressController
+                                                          .text);
+                                                    },
+                                                    title: Text(
+                                                        '${place.name},${place.street}'),
+                                                    subtitle: Text(
+                                                        '${place.locality},${place.country}'),
+                                                  ),
                                                 );
                                               },
                                             ),
@@ -218,47 +244,6 @@ class SearchInjector extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => LocationApi(),
       child: child,
-    );
-  }
-}
-
-class View extends StatefulWidget {
-  View({Key key}) : super(key: key);
-
-  @override
-  _ViewState createState() => _ViewState();
-}
-
-class _ViewState extends State<View> {
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('user').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) return Text("Some Error");
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading...");
-          } else {
-            final list = snapshot.data.docs;
-            return ListView.builder(
-              itemBuilder: (context, i) {
-                return Card(
-                  //elevation: 5,
-                  shadowColor: Colors.red,
-                  child: ListTile(
-                    title: Text(
-                      list[i]['name'],
-                    ),
-                    subtitle: Text(list[i]['email']),
-                  ),
-                );
-              },
-              itemCount: list.length,
-            );
-          }
-        },
-      ),
     );
   }
 }

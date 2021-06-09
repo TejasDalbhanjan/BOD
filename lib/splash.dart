@@ -63,23 +63,19 @@ class _SplashSState extends State<SplashS> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
-                    backgroundColor: Colors.red,
-                    radius: MediaQuery.of(context).size.height * 0.1,
-                    child: Icon(
-                      Icons.ac_unit_rounded,
-                      color: Colors.black,
-                    )),
+                Container(
+                  child: Image(
+                    image: AssetImage(
+                      "assets/icon/logo.png",
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  width: MediaQuery.of(context).size.height * 0.3,
+                ),
                 Padding(
                   padding: EdgeInsets.only(top: 10),
                 ),
-                Text(
-                  "BOP",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold),
-                )
               ],
             ))
       ]),

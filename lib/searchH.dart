@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'appD.dart';
 import 'package:easy_localization/easy_localization.dart';
-//import 'package:qrscan/qrscan.dart' as scanner;
 
 class SearchH extends StatefulWidget {
   final User user;

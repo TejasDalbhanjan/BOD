@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:geocoder/model.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -25,8 +23,11 @@ class Db {
       String adhar,
       GeoPoint location,
       String uid) async {
+    var status = await OneSignal.shared.getPermissionSubscriptionState();
+    String tokenId = status.subscriptionStatus.userId;
     return await user.doc(uid).set({
       'uid': uid,
+      'tokenId': tokenId,
       'name': name,
       'email': email,
       'address': address,
