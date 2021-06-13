@@ -1,15 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-
+import 'package:BOD/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-
-import 'TC.dart';
+import 'screens/terms&conditions.dart';
 
 class View extends StatefulWidget {
   @override
@@ -17,29 +14,6 @@ class View extends StatefulWidget {
 }
 
 class _ViewState extends State<View> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    OneSignal.shared
-        .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
-      try {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            settings: RouteSettings(name: '/a'),
-            builder: (context) => TC(),
-          ),
-        );
-      } catch (e) {
-        print('e : ' + e.toString());
-      }
-    });
-  }
-
-  final TextEditingController _textController = TextEditingController();
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -71,57 +45,6 @@ class _ViewState extends State<View> {
       ],
     );
   }
-
-  final String serverToken =
-      "AAAAH48hMfk:APA91bGtzLwnw8WNNy_6ClIC30qlGv7Ky_wgafp1BvSWBEjeCzDhDXDLfMSAQcUah2lNP5DaDUXpC3vI8Dg_X74goCuxk-KjMZdyM8gK4CSMeqdPrR8OY0j2Fyi-nXyo42NzUmkaGzM4";
-
-  Future<Map<String, dynamic>> sendAndRetrieveMessage(String token) async {
-    await http.post(
-      'https://fcm.googleapis.com/fcm/send',
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-        'Authorization': 'key=$serverToken',
-      },
-      body: jsonEncode(
-        <String, dynamic>{
-          'notification': <String, dynamic>{
-            'body': _textController.text,
-            'title': 'FlutterCloudMessage'
-          },
-          'priority': 'high',
-          'data': <String, dynamic>{
-            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-            'id': '1',
-            'status': 'done'
-          },
-          'to': token,
-        },
-      ),
-    );
-    getuserName() {
-      final id = FirebaseAuth.instance.currentUser.uid;
-      return StreamBuilder(
-          stream:
-              FirebaseFirestore.instance.collection('user').doc(id).snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) return Text("Loading ...Please wait");
-
-            return snapshot.data['name'];
-          });
-    }
-
-    _textController.text = getuserName().toString() + 'Requested Blood';
-    final Completer<Map<String, dynamic>> completer =
-        Completer<Map<String, dynamic>>();
-
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        completer.complete(message);
-      },
-    );
-
-    return completer.future;
-  }
 }
 
 class JobCard extends StatefulWidget {
@@ -141,6 +64,23 @@ class JobCard extends StatefulWidget {
 }
 
 class _JobCardState extends State<JobCard> {
+  @override
+  void initState() {
+    super.initState();
+    OneSignal.shared.setNotificationOpenedHandler((result) {
+      if (result.action.actionId == "accept_button") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TC(),
+          ),
+        );
+      } else if (result.action.actionId == "deny_button") {
+        return;
+      }
+    });
+  }
+
   Future<Response> sendNotification(
       List<String> tokenIdList, String contents, String heading) async {
     return await post(
@@ -149,32 +89,24 @@ class _JobCardState extends State<JobCard> {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
-        "app_id":
-            "61bd310f-cf42-48f6-9f66-7dbab9bed2f5", //kAppId is the App Id that one get from the OneSignal When the application is registered.
+        "app_id": onesignalid,
         'priority': 'high',
-        "include_player_ids":
-            tokenIdList, //tokenIdList Is the List of All the Token Id to to Whom notification must be sent.
-
-        // android_accent_color reprsent the color of the heading text in the notifiction
-        "android_accent_color": "FF0000FF",
-        "android_led_color": "FF0000FF",
-        "small_icon": "ic_stat_onesignal_default",
+        "include_player_ids": tokenIdList,
+        "android_accent_color": "FF99000",
+        "Lockscreen": "PUBLIC",
+        "android_led_color": "FF9976D2",
+        "small_icon": "assets/icon/logo.png",
         "android_sound": "notification",
-
-        "large_icon":
-            "https://www.filepicker.io/api/file/zPloHSmnQsix82nlj9Aj?filename=name.jpg",
-
+        "large_icon": "assets/icon/logo.png",
         "headings": {"en": heading},
-
         "contents": {"en": contents},
         "buttons": [
           {
-            "id": "id2",
+            "id": "accept_button",
             "text": "Accept",
-            "icon": "ic_menu_share",
-            "actionId": ""
+            "icon": "assets/icon/logo.png",
           },
-          {"id": "id1", "text": "Deny", "icon": "ic_menu_send", "actionId": ""}
+          {"id": "deny_button", "text": "Deny", "icon": "assets/icon/logo.png"}
         ]
       }),
     );
@@ -186,7 +118,7 @@ class _JobCardState extends State<JobCard> {
         stream:
             FirebaseFirestore.instance.collection('user').doc(id).snapshots(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return Text("Loading ...Please wait");
+          if (!snapshot.hasData) return CircularProgressIndicator();
 
           return snapshot.data['name'];
         });
@@ -265,6 +197,3 @@ class _JobCardState extends State<JobCard> {
     );
   }
 }
-
-/*
-*/

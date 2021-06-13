@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:BOD/constants/constants.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -11,18 +12,16 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
-import 'db.dart';
+import '../../services/database.dart';
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 
-import 'homepage.dart';
+import '../homepage.dart';
 
 class BBFul extends StatefulWidget {
   @override
   State createState() => BBState();
 }
-
-const kGoogleApiKey = "AIzaSyDbtEjg1C6-43fkzRdPq406uYSJGaBMExI";
 
 class BBState extends State<BBFul> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -109,14 +108,7 @@ class BBState extends State<BBFul> {
       body: Form(
         key: _formKey,
         child: new Stack(
-          fit: StackFit.expand,
           children: <Widget>[
-            new Image(
-              image: AssetImage("assets/logo.jpg"),
-              fit: BoxFit.fill,
-              color: Colors.black12,
-              colorBlendMode: BlendMode.colorBurn,
-            ),
             SingleChildScrollView(
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -399,7 +391,7 @@ class BBState extends State<BBFul> {
     if (p != null) {
       // get detail (lat/lng)
       GoogleMapsPlaces _places = GoogleMapsPlaces(
-        apiKey: kGoogleApiKey,
+        apiKey: apikey,
         apiHeaders: await GoogleApiHeaders().getHeaders(),
       );
       PlacesDetailsResponse detail =

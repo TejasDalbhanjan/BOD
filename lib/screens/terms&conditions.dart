@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'searchH.dart';
+import '../searchH.dart';
 import 'homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

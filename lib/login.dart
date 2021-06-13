@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'Asa.dart';
+import 'screens/registration_selection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'homepage.dart';
+import 'screens/homepage.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -37,10 +37,13 @@ class LoginPageState extends State<LoginPage> {
               colorBlendMode: BlendMode.dstATop,
             ),
             Container(
-              padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.1),
+              height: MediaQuery.of(context).size.height * 1,
+              width: MediaQuery.of(context).size.width * 1,
               child: Column(
                 children: <Widget>[
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                  ),
                   Center(
                     child: Text(
                       "BOD",
@@ -76,7 +79,6 @@ class LoginPageState extends State<LoginPage> {
                                   MediaQuery.of(context).size.height * 0.03,
                               color: Colors.black)),
                       keyboardType: TextInputType.emailAddress,
-                      //onSaved: (String val) => setState(() => _email = val), l
                     ),
                   ),
                   Container(
@@ -118,14 +120,14 @@ class LoginPageState extends State<LoginPage> {
                     child: MaterialButton(
                       onPressed: () async {
                         if (formkey.currentState.validate()) {
-                          _scaffoldkey.currentState.showSnackBar(
-                              SnackBar(content: Text("Failed To SignIn")));
-                        } else {
                           final SharedPreferences pref =
                               await SharedPreferences.getInstance();
                           pref.setStringList('credentials',
                               [_emailController.text, _passController.text]);
                           signInWithEmailAndPassword();
+                        } else {
+                          _scaffoldkey.currentState.showSnackBar(
+                              SnackBar(content: Text("Failed To SignIn")));
                         }
                       },
                       color: Colors.red,
@@ -196,7 +198,7 @@ class LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.15,
+                    height: MediaQuery.of(context).size.height * 0.1,
                   ),
                   Container(
                     child: Center(
@@ -211,9 +213,6 @@ class LoginPageState extends State<LoginPage> {
                   )
                 ],
               ),
-            ),
-            SizedBox(
-              height: 30,
             ),
           ],
         ),

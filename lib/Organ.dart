@@ -1,8 +1,8 @@
-import 'package:BOD/places.dart';
-import 'package:BOD/search.dart';
+import 'package:BOD/model/places.dart';
+import 'package:BOD/widgets/search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'appD.dart';
+import 'screens/app_drawer.dart';
 import 'Blood.dart';
 import 'package:easy_localization/easy_localization.dart';
 

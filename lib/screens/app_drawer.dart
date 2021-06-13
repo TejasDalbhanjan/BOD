@@ -1,14 +1,13 @@
 import 'package:BOD/chatbot.dart';
-import 'package:BOD/messaging.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'settings.dart';
 import 'package:qrscans/qrscan.dart' as scanner;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'login.dart';
-import 'db.dart';
-import 'qr.dart';
+import '../login.dart';
+import '../services/database.dart';
+import '../model/qr.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 

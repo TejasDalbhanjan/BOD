@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:BOD/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +12,10 @@ import 'package:flutter/services.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:geolocator/geolocator.dart';
-import 'db.dart';
+import '../../services/database.dart';
 import 'dart:async';
-import 'homepage.dart';
+import '../homepage.dart';
 import 'package:flutter/cupertino.dart';
-
-const kGoogleApiKey = "AIzaSyDbtEjg1C6-43fkzRdPq406uYSJGaBMExI";
 
 class Donorf extends StatefulWidget {
   @override
@@ -131,12 +130,6 @@ class DonorfState extends State<Donorf> {
         child: Container(
           child: new Column(
             children: <Widget>[
-              new Image(
-                image: AssetImage("assets/logo.jpg"),
-                fit: BoxFit.fill,
-                color: Colors.black12,
-                colorBlendMode: BlendMode.colorBurn,
-              ),
               Container(
                 height: MediaQuery.of(context).size.height * 0.8,
                 width: MediaQuery.of(context).size.width * 1,
@@ -547,7 +540,7 @@ class DonorfState extends State<Donorf> {
     if (p != null) {
       // get detail (lat/lng)
       GoogleMapsPlaces _places = GoogleMapsPlaces(
-        apiKey: kGoogleApiKey,
+        apiKey: apikey,
         apiHeaders: await GoogleApiHeaders().getHeaders(),
       );
       PlacesDetailsResponse detail =

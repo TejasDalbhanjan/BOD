@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'appD.dart';
+import '../screens/app_drawer.dart';
 
 class CodeQR extends StatefulWidget {
   @override

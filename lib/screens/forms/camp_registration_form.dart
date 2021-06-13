@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:BOD/places.dart';
-import 'package:BOD/search.dart';
+import 'package:BOD/model/places.dart';
+import 'package:BOD/widgets/search.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'db.dart';
+import '../../services/database.dart';
 
 class DateTimePickerWidget extends StatefulWidget {
   @override
@@ -121,44 +121,51 @@ class _DateTimePickerWidgetState extends State<DateTimePickerWidget> {
                           width: MediaQuery.of(context).size.width,
                           height: 150,
                           child: StreamBuilder<List<Place>>(
-                              stream: api.controllerOut,
-                              builder: (context, snapshot) {
-                                if (snapshot.data == null) {
-                                  return Center(
-                                      child: Text('No data address found'));
-                                }
-                                final data = snapshot.data;
-
-                                return Scrollbar(
+                            stream: api.controllerOut,
+                            builder: (context, snapshot) {
+                              if (snapshot.data == null) {
+                                return Center(
+                                    child: Text('No data address found'));
+                              }
+                              final data = snapshot.data;
+                              return Scrollbar(
+                                controller: _scrollController,
+                                child: SingleChildScrollView(
                                   controller: _scrollController,
-                                  child: SingleChildScrollView(
-                                    controller: _scrollController,
-                                    child: Container(
-                                      child: Builder(builder: (context) {
+                                  child: Container(
+                                    child: Builder(
+                                      builder: (context) {
                                         return Column(
-                                            children: List.generate(data.length,
-                                                (index) {
-                                          final place = data[index];
-                                          return ListTile(
-                                            onTap: () {
-                                              setState(() {
-                                                api.addressController.text =
-                                                    '${place.name}, ${place.locality}';
-                                                print(
-                                                    api.addressController.text);
-                                              });
+                                          children: List.generate(
+                                            data.length,
+                                            (index) {
+                                              final place = data[index];
+                                              return ListTile(
+                                                onTap: () {
+                                                  setState(() {
+                                                    api.addressController.text =
+                                                        '${place.name}, ${place.locality}';
+                                                    print(api.addressController
+                                                        .text);
+                                                  });
+                                                },
+                                                title: Text(
+                                                  '${place.name},${place.street}',
+                                                ),
+                                                subtitle: Text(
+                                                  '${place.locality},${place.country}',
+                                                ),
+                                              );
                                             },
-                                            title: Text(
-                                                '${place.name},${place.street}'),
-                                            subtitle: Text(
-                                                '${place.locality},${place.country}'),
-                                          );
-                                        }));
-                                      }),
+                                          ),
+                                        );
+                                      },
                                     ),
                                   ),
-                                );
-                              }),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ],
                     ),

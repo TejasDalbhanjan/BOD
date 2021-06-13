@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'request.dart';
+import 'services/google_maps_services.dart';
 
 class AppState with ChangeNotifier {
   static LatLng _initialPosition;

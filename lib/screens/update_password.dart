@@ -20,7 +20,7 @@ class _UpdateState extends State<Update> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Changep").tr(), backgroundColor: Colors.red),
-      //resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: false,
       body: Form(
         key: _formkey,
         child: Container(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 //import 'Asa.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'login.dart';
+import '../login.dart';
 import 'homepage.dart';
 
 List<String> finalcredential;

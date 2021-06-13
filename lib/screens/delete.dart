@@ -1,8 +1,8 @@
 import 'dart:ui';
-import 'db.dart';
+import '../services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'login.dart';
+import '../login.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class Delete extends StatefulWidget {

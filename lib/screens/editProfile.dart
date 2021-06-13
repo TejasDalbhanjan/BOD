@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'db.dart';
+import '../services/database.dart';
 
 class Editp extends StatefulWidget {
   @override

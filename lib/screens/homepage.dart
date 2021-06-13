@@ -1,14 +1,14 @@
 import 'dart:io';
-import 'package:BOD/camp.dart';
-import 'db.dart';
+import 'package:BOD/screens/forms/camp_registration_form.dart';
+import '../services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'dd.dart';
-import 'TC.dart';
-import 'appD.dart';
+import '../dd.dart';
+import 'terms&conditions.dart';
+import 'app_drawer.dart';
 import 'settings.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'map.dart';
+import '../model/map.dart';
 
 class BottomNB extends StatefulWidget {
   final User user;

@@ -1,8 +1,9 @@
+import 'package:BOD/constants/constants.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'splash.dart';
+import 'screens/splash_screen.dart';
 import 'login.dart';
 
 Future<void> main() async {
@@ -36,7 +37,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void configOneSignel() {
-    OneSignal.shared.init('61bd310f-cf42-48f6-9f66-7dbab9bed2f5');
+    OneSignal.shared.init(onesignalid);
   }
 
   @override

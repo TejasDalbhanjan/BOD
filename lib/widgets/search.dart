@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
-import 'places.dart';
+import '../model/places.dart';
 
 class Deley {
   final int milliseconds;

@@ -1,7 +1,7 @@
-import 'package:BOD/request.dart';
+import 'package:BOD/services/google_maps_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'appD.dart';
+import '../screens/app_drawer.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -121,12 +121,6 @@ class GmapState extends State<Mapp> {
               ],
             ),
           );
-  }
-
-  void _onCameraMove(CameraPosition position) {
-    setState(() {
-      _lastPosition = position.target;
-    });
   }
 
   void createRoute(String encondedPoly) {

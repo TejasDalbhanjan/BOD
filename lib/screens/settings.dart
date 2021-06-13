@@ -1,9 +1,9 @@
-import 'package:BOD/db.dart';
+import 'package:BOD/screens/update_password.dart';
+import '../services/database.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'changeL.dart';
+import 'language_change.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'update_P.dart';
 import 'editProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

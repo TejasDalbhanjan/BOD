@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'donorf.dart';
-import 'BB&H.dart';
+import 'forms/donor_form.dart';
+import 'forms/BB&Hospital_form.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class Asa extends StatefulWidget {

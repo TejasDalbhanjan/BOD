@@ -1,19 +1,13 @@
-import 'dart:async';
-import 'dart:convert';
-
-import 'package:BOD/places.dart';
-import 'package:BOD/search.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:BOD/model/places.dart';
+import 'package:BOD/widgets/search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'BList.dart';
-import 'appD.dart';
+import 'screens/app_drawer.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'Organ.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:http/http.dart' as http;
 
 class BloodD extends StatefulWidget {
   @override
