@@ -44,176 +44,197 @@ class LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.1,
                   ),
-                  Center(
-                    child: Text(
-                      "BOD",
-                      style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          fontSize: MediaQuery.of(context).size.height * 0.1,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.25,
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                    child: TextFormField(
-                      controller: _emailController,
-                      textInputAction: TextInputAction.next,
-                      onEditingComplete: () => node.nextFocus(),
-                      validator: (value) {
-                        if (value.isEmpty ||
-                            !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(value)) {
-                          return 'Enter a valid email!';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          labelText: 'Email_id'.tr(),
-                          labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize:
-                                  MediaQuery.of(context).size.height * 0.03,
-                              color: Colors.black)),
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-                    child: TextFormField(
-                      controller: _passController,
-                      textInputAction: TextInputAction.next,
-                      onFieldSubmitted: (_) => node.unfocus(),
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Enter a valid password!';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        labelText: 'Password'.tr(),
-                        labelStyle: TextStyle(
+                  Column(
+                    children: [
+                      Text(
+                        "BOD",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontSize: MediaQuery.of(context).size.height * 0.1,
                             fontWeight: FontWeight.bold,
-                            fontSize: MediaQuery.of(context).size.height * 0.03,
-                            color: Colors.black),
-                        suffixIcon: IconButton(
-                          icon: Icon(_secureText
-                              ? Icons.remove_red_eye
-                              : Icons.security),
-                          onPressed: () {
-                            setState(() {
-                              _secureText = !_secureText;
-                            });
-                          },
-                        ),
+                            color: Colors.black,
+                            letterSpacing: 9),
                       ),
-                      obscureText: _secureText,
-                      keyboardAppearance: Brightness.light,
-                    ),
+                    ],
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.045),
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.064,
-                    child: MaterialButton(
-                      onPressed: () async {
-                        if (formkey.currentState.validate()) {
-                          final SharedPreferences pref =
-                              await SharedPreferences.getInstance();
-                          pref.setStringList('credentials',
-                              [_emailController.text, _passController.text]);
-                          signInWithEmailAndPassword();
-                        } else {
-                          _scaffoldkey.currentState.showSnackBar(
-                              SnackBar(content: Text("Failed To SignIn")));
-                        }
-                      },
-                      color: Colors.red,
-                      highlightColor: Colors.redAccent,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        side: BorderSide(color: Colors.white),
-                      ),
-                      elevation: 8.0,
-                      child: Center(
-                        child: Text(
-                          'Log_IN',
-                          style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.height * 0.03,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ).tr(),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.045),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => Asa()),
-                            );
-                          },
-                          child: Text(
-                            'New_reg',
-                            style: TextStyle(
-                              color: Colors.redAccent,
-                              fontWeight: FontWeight.bold,
-                              fontSize:
-                                  MediaQuery.of(context).size.height * 0.02,
-                              decoration: TextDecoration.underline,
-                              textBaseline: TextBaseline.alphabetic,
-                            ),
-                          ).tr(),
-                        ),
-                        SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.43),
-                        InkWell(
-                          onTap: () {
-                            if (true) {
-                              sendPasswordResetEmail(_emailController.text);
-                            }
-                          },
-                          child: Text(
-                            'Forgot_p',
-                            style: TextStyle(
-                              color: Colors.redAccent,
-                              fontWeight: FontWeight.bold,
-                              fontSize:
-                                  MediaQuery.of(context).size.height * 0.02,
-                              decoration: TextDecoration.underline,
-                              textBaseline: TextBaseline.alphabetic,
-                            ),
-                          ).tr(),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.1,
-                  ),
-                  Container(
-                    child: Center(
-                      child: InkWell(
-                        child: Text(
-                          "Blood and Organ Donation Management",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        focusColor: Colors.grey,
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  child: TextFormField(
+                    controller: _emailController,
+                    textInputAction: TextInputAction.next,
+                    onEditingComplete: () => node.nextFocus(),
+                    validator: (value) {
+                      if (value.isEmpty ||
+                          !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(value)) {
+                        return 'Enter a valid email!';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                        labelText: 'Email_id'.tr(),
+                        labelStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: MediaQuery.of(context).size.height * 0.03,
+                            color: Colors.black)),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  child: TextFormField(
+                    controller: _passController,
+                    textInputAction: TextInputAction.next,
+                    onFieldSubmitted: (_) => node.unfocus(),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Enter a valid password!';
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Password'.tr(),
+                      labelStyle: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: MediaQuery.of(context).size.height * 0.03,
+                          color: Colors.black),
+                      suffixIcon: IconButton(
+                        icon: Icon(_secureText
+                            ? Icons.remove_red_eye
+                            : Icons.security),
+                        onPressed: () {
+                          setState(() {
+                            _secureText = !_secureText;
+                          });
+                        },
+                      ),
+                    ),
+                    obscureText: _secureText,
+                    keyboardAppearance: Brightness.light,
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.045),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.064,
+                  child: MaterialButton(
+                    onPressed: () async {
+                      if (formkey.currentState.validate()) {
+                        final SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                        pref.setStringList('credentials',
+                            [_emailController.text, _passController.text]);
+                        signInWithEmailAndPassword();
+                      } else {
+                        _scaffoldkey.currentState.showSnackBar(
+                            SnackBar(content: Text("Failed To SignIn")));
+                      }
+                    },
+                    color: Colors.red,
+                    highlightColor: Colors.redAccent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      side: BorderSide(color: Colors.white),
+                    ),
+                    elevation: 8.0,
+                    child: Center(
+                      child: Text(
+                        'Log_IN',
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.height * 0.03,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ).tr(),
+                    ),
+                  ),
+                ),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      InkWell(
+                        onTap: () {
+                          if (true) {
+                            sendPasswordResetEmail(_emailController.text);
+                          }
+                        },
+                        child: Text(
+                          'Forgot_p',
+                          style: TextStyle(
+                            color: Colors.redAccent,
+                            fontWeight: FontWeight.bold,
+                            fontSize: MediaQuery.of(context).size.height * 0.02,
+                            decoration: TextDecoration.underline,
+                            textBaseline: TextBaseline.alphabetic,
+                          ),
+                        ).tr(),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                ),
+                Container(
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Asa()),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Don't have an account? ",
+                          style: TextStyle(
+                            color: Colors.blueGrey,
+                            fontSize:
+                                MediaQuery.of(context).size.height * 0.019,
+                            textBaseline: TextBaseline.alphabetic,
+                          ),
+                        ).tr(),
+                        Text(
+                          'New_reg',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold,
+                            fontSize: MediaQuery.of(context).size.height * 0.02,
+                            decoration: TextDecoration.underline,
+                            textBaseline: TextBaseline.alphabetic,
+                          ),
+                        ).tr(),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  child: Center(
+                    child: InkWell(
+                      child: Text(
+                        "@ Blood and Organ Donation Management",
+                        style: TextStyle(
+                            color: Colors.blueGrey,
+                            fontWeight: FontWeight.w900,
+                            fontSize:
+                                MediaQuery.of(context).size.height * 0.022),
+                      ),
+                      focusColor: Colors.grey,
+                    ),
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),
@@ -233,10 +254,13 @@ class LoginPageState extends State<LoginPage> {
         await user.sendEmailVerification();
       }
 
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
           builder: (_) => BottomNB(
-                user: user,
-              )));
+            user: user,
+          ),
+        ),
+      );
     } catch (e) {
       if (formkey.currentState.validate()) {
         _scaffoldkey.currentState.showSnackBar(
@@ -247,3 +271,10 @@ class LoginPageState extends State<LoginPage> {
     }
   }
 }
+
+/*
+InkWell(
+                          onTap: 
+                          child: 
+
+*/

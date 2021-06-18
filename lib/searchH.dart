@@ -1,3 +1,6 @@
+import 'package:BOD/model/hospital.dart';
+import 'package:BOD/model/map.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'screens/app_drawer.dart';
@@ -12,6 +15,63 @@ class SearchH extends StatefulWidget {
 
 class SearchHState extends State<SearchH> {
   FirebaseAuth _auth = FirebaseAuth.instance;
+
+  TextEditingController _searchController = TextEditingController();
+
+  Future resultsLoaded;
+  List _allResults = [];
+  List _resultsList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    resultsLoaded = availableHospitals();
+  }
+
+  _onSearchChanged() {
+    searchResultsList();
+  }
+
+  searchResultsList() {
+    var showResults = [];
+
+    if (_searchController.text != "") {
+      for (var tripSnapshot in _allResults) {
+        var title = Hospital.fromSnapshot(tripSnapshot).name.toLowerCase();
+
+        if (title.contains(_searchController.text.toLowerCase())) {
+          showResults.add(tripSnapshot);
+        }
+      }
+    } else {
+      showResults = List.from(_allResults);
+    }
+    setState(() {
+      _resultsList = showResults;
+    });
+  }
+
+  availableHospitals() async {
+    var data = await FirebaseFirestore.instance.collection('hospital').get();
+    setState(() {
+      _allResults = data.docs;
+    });
+    searchResultsList();
+    return "complete";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +99,7 @@ class SearchHState extends State<SearchH> {
           Container(
             padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
             child: TextField(
+              controller: _searchController,
               decoration: InputDecoration(
                 labelText: "SearchH".tr(),
                 border: OutlineInputBorder(
@@ -48,8 +109,39 @@ class SearchHState extends State<SearchH> {
               ),
             ),
           ),
+          Expanded(
+              child: ListView.builder(
+            itemCount: _resultsList.length,
+            itemBuilder: (BuildContext context, int index) =>
+                buildCard(context, _resultsList[index]),
+          )),
         ],
       ),
     );
   }
+}
+
+Widget buildCard(BuildContext context, DocumentSnapshot document) {
+  final hos = Hospital.fromSnapshot(document);
+  return Card(
+    elevation: 8,
+    child: ListTile(
+      contentPadding: EdgeInsets.all(20),
+      leading: IconButton(
+          icon: Icon(Icons.directions),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Mapp()),
+            );
+          }),
+      title: Text(
+        hos.name,
+        style: TextStyle(
+            color: Colors.black, fontWeight: FontWeight.w900, fontSize: 20),
+      ),
+      subtitle: Text(hos.address),
+      onTap: () {},
+    ),
+  );
 }

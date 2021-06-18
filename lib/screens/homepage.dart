@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:BOD/screens/forms/camp_registration_form.dart';
+import '../searchH.dart';
 import '../services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../dd.dart';
-import 'terms&conditions.dart';
 import 'app_drawer.dart';
 import 'settings.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -28,7 +28,7 @@ class _BottomNBState extends State<BottomNB> {
     Mapp(),
     Dd(),
     DateTimePickerWidget(),
-    TC(),
+    SearchH(),
     Set(),
   ];
   final GlobalKey<ScaffoldState> _globalKey = new GlobalKey<ScaffoldState>();
@@ -67,7 +67,7 @@ class _BottomNBState extends State<BottomNB> {
               backgroundColor: Colors.white,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.request_page),
+              icon: ImageIcon(AssetImage("assets/icon/drop.png")),
               label: ('Request').tr(),
               backgroundColor: Colors.white,
             ),

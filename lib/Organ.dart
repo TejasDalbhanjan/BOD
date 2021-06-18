@@ -1,3 +1,4 @@
+import 'package:BOD/BList.dart';
 import 'package:BOD/model/places.dart';
 import 'package:BOD/widgets/search.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +13,134 @@ class OrganD extends StatefulWidget {
 }
 
 class _OrganDState extends State<OrganD> {
-  final List<String> organ = ["-", "Eye", "Kidney", "Liver"];
-  final List<String> select = ["-", "Blood", "Organ"];
+  TextEditingController selectController = TextEditingController();
   final _scrollController = ScrollController();
 
-  String selectedoptions = "-";
-  String selectedoptions1 = "-";
+  void _showModal(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.3,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    RaisedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectController.text = "Heart";
+                          Navigator.of(context).pop();
+                        });
+                      },
+                      child: Text(
+                        "Heart",
+                        style: TextStyle(
+                            color: Colors.white70, fontWeight: FontWeight.bold),
+                      ),
+                      color: Colors.blue,
+                      elevation: 8,
+                      hoverColor: Colors.white,
+                      highlightColor: Colors.red,
+                    ),
+                    RaisedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectController.text = "Lungs";
+                          Navigator.of(context).pop();
+                        });
+                      },
+                      child: Text(
+                        "Lungs",
+                        style: TextStyle(
+                            color: Colors.white70, fontWeight: FontWeight.bold),
+                      ),
+                      color: Colors.blue,
+                      elevation: 8,
+                      hoverColor: Colors.white,
+                      highlightColor: Colors.red,
+                    ),
+                    RaisedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectController.text = "Liver";
+                          Navigator.of(context).pop();
+                        });
+                      },
+                      child: Text(
+                        "Liver",
+                        style: TextStyle(
+                            color: Colors.white70, fontWeight: FontWeight.bold),
+                      ),
+                      color: Colors.blue,
+                      elevation: 8,
+                      hoverColor: Colors.white,
+                      highlightColor: Colors.red,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    RaisedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectController.text = "Kidney";
+                          Navigator.of(context).pop();
+                        });
+                      },
+                      child: Text(
+                        "Kidney",
+                        style: TextStyle(
+                            color: Colors.white70, fontWeight: FontWeight.bold),
+                      ),
+                      color: Colors.blue,
+                      elevation: 8,
+                      hoverColor: Colors.white,
+                      highlightColor: Colors.red,
+                    ),
+                    RaisedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectController.text = "Eyes";
+                          Navigator.of(context).pop();
+                        });
+                      },
+                      child: Text(
+                        "Eyes",
+                        style: TextStyle(
+                            color: Colors.white70, fontWeight: FontWeight.bold),
+                      ),
+                      color: Colors.blue,
+                      elevation: 8,
+                      hoverColor: Colors.white,
+                      highlightColor: Colors.red,
+                    ),
+                    RaisedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectController.text = "Intestine";
+                          Navigator.of(context).pop();
+                        });
+                      },
+                      child: Text(
+                        "Intestine",
+                        style: TextStyle(
+                            color: Colors.white70, fontWeight: FontWeight.bold),
+                      ),
+                      color: Colors.blue,
+                      elevation: 8,
+                      hoverColor: Colors.white,
+                      highlightColor: Colors.red,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,78 +152,33 @@ class _OrganDState extends State<OrganD> {
       ),
       drawer: ADrawer(),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              height: 5,
-            ),
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: "SelectType".tr(),
-                filled: true,
-                fillColor: Colors.grey[350],
-                border: OutlineInputBorder(
-                  borderSide: new BorderSide(color: Colors.red),
-                ),
-              ),
-              elevation: 2,
-              hint: Container(
-                child: Text("Select").tr(),
-              ),
-              items: select.map((String select) {
-                return DropdownMenuItem<String>(
-                  child: Text(select),
-                  value: select,
-                );
-              }).toList(),
-              value: selectedoptions,
-              onChanged: (value) {
-                setState(() {
-                  if (value == "Blood") {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => BloodD()));
-                  } else if (value == "Organ") {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => OrganD()));
-                  }
-                });
-              },
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "SelectOT".tr(),
-              textAlign: TextAlign.left,
-            ),
-            DropdownButtonFormField<String>(
+          children: [
+            TextField(
+              readOnly: true,
+              onTap: () => _showModal(context),
+              controller: selectController,
               decoration: InputDecoration(
                 labelText: "Organ".tr(),
+                hintText: "Organ".tr(),
                 border: OutlineInputBorder(
                   borderSide: new BorderSide(color: Colors.red),
                 ),
               ),
-              elevation: 4,
-              hint: Container(
-                child: Text("Organ").tr(),
-              ),
-              items: organ.map((String organ) {
-                return DropdownMenuItem<String>(
-                  child: Text(organ),
-                  value: organ,
-                );
-              }).toList(),
-              value: selectedoptions1,
-              onChanged: (value) {
-                setState(() {
-                  selectedoptions1 = value;
-                });
-              },
             ),
-            SizedBox(
-              height: 15,
+            Center(
+              child: RaisedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => View()));
+                },
+                child: Text(
+                  "Search".tr() + " " + "in all Location",
+                  style: TextStyle(color: Colors.white),
+                ),
+                color: Colors.red[500],
+              ),
             ),
             Row(
               children: [
@@ -196,32 +274,21 @@ class _OrganDState extends State<OrganD> {
                 ),
               ),
             ),
-            Center(
-              child: Container(
-                child: RaisedButton(
-                  onPressed: () {},
-                  child: Text(
-                    "Search".tr(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  color: Colors.red[500],
-                ),
+            RaisedButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => View()));
+              },
+              child: Text(
+                "Search".tr(),
+                style: TextStyle(color: Colors.white),
               ),
+              color: Colors.red[500],
             ),
           ],
         ),
       ),
     );
-  }
-
-  void search(BuildContext context) async {
-    showModalBottomSheet(
-        context: context,
-        builder: (_) {
-          return ListView.builder(itemBuilder: (context, index) {
-            return ListTile();
-          });
-        });
   }
 }
 

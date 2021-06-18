@@ -22,9 +22,8 @@ class Db {
       String bloodg,
       String adhar,
       GeoPoint location,
+      String tokenId,
       String uid) async {
-    var status = await OneSignal.shared.getPermissionSubscriptionState();
-    String tokenId = status.subscriptionStatus.userId;
     return await user.doc(uid).set({
       'uid': uid,
       'tokenId': tokenId,
@@ -39,12 +38,13 @@ class Db {
     });
   }
 
-  Future<void> createHospitalBBdata(
-      String name, String address, String licenseno, String uid) async {
+  Future<void> createHospitalBBdata(String name, String address,
+      String licenseno, GeoPoint location, String uid) async {
     return await hospitalbloodbank.doc(uid).set({
       'uid': uid,
       'name': name,
       'address': address,
+      'location': location,
       'Licence_No': licenseno,
     });
   }

@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import '../../services/database.dart';
 import 'dart:async';
 import '../homepage.dart';
@@ -109,6 +110,173 @@ class DonorfState extends State<Donorf> {
     });
   }
 
+  void _showModal(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (_) {
+          return Container(
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: Column(children: [
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      RaisedButton(
+                        onPressed: () {
+                          setState(() {
+                            _bloodg.text = "O+";
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: Text(
+                          "O+",
+                          style: TextStyle(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        color: Colors.blue,
+                        elevation: 8,
+                        hoverColor: Colors.white,
+                        highlightColor: Colors.red,
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                          setState(() {
+                            _bloodg.text = "O-";
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: Text(
+                          "O-",
+                          style: TextStyle(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        color: Colors.blue,
+                        elevation: 8,
+                        hoverColor: Colors.white,
+                        highlightColor: Colors.red,
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                          setState(() {
+                            _bloodg.text = "A+";
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: Text(
+                          "A+",
+                          style: TextStyle(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        color: Colors.blue,
+                        elevation: 8,
+                        hoverColor: Colors.white,
+                        highlightColor: Colors.red,
+                      ),
+                    ]),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      RaisedButton(
+                        onPressed: () {
+                          setState(() {
+                            _bloodg.text = "A-";
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: Text(
+                          "A-",
+                          style: TextStyle(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        color: Colors.blue,
+                        elevation: 8,
+                        hoverColor: Colors.white,
+                        highlightColor: Colors.red,
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                          setState(() {
+                            _bloodg.text = "B+";
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: Text(
+                          "B+",
+                          style: TextStyle(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        color: Colors.blue,
+                        elevation: 8,
+                        hoverColor: Colors.white,
+                        highlightColor: Colors.red,
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                          setState(() {
+                            _bloodg.text = "AB+";
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: Text(
+                          "AB+",
+                          style: TextStyle(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        color: Colors.blue,
+                        elevation: 8,
+                        hoverColor: Colors.white,
+                        highlightColor: Colors.red,
+                      ),
+                    ]),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      RaisedButton(
+                        onPressed: () {
+                          setState(() {
+                            _bloodg.text = "AB-";
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: Text(
+                          "AB-",
+                          style: TextStyle(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        color: Colors.blue,
+                        elevation: 8,
+                        hoverColor: Colors.white,
+                        highlightColor: Colors.red,
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                          setState(() {
+                            _bloodg.text = "B-";
+                            Navigator.of(context).pop();
+                          });
+                        },
+                        child: Text(
+                          "B-",
+                          style: TextStyle(
+                              color: Colors.white70,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        color: Colors.blue,
+                        elevation: 8,
+                        hoverColor: Colors.white,
+                        highlightColor: Colors.red,
+                      ),
+                    ])
+              ]));
+        });
+  }
+
   Future upload() async {
     String name = file.path.split('/').last;
     Reference reference = FirebaseStorage.instance.ref().child(name);
@@ -190,6 +358,7 @@ class DonorfState extends State<Donorf> {
                       Container(
                         padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
                         child: TextFormField(
+                          readOnly: true,
                           controller: locationController,
                           validator: (value) {
                             if (value.isEmpty) {
@@ -287,6 +456,8 @@ class DonorfState extends State<Donorf> {
                       Container(
                         padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
                         child: TextFormField(
+                          readOnly: true,
+                          onTap: () => _showModal(context),
                           validator: (value) {
                             if (value.isEmpty) {
                               return 'Enter Blood Group!';
@@ -489,7 +660,8 @@ class DonorfState extends State<Donorf> {
       UserCredential result = (await _auth.createUserWithEmailAndPassword(
           email: _emailController.text, password: _passController.text));
       User user = result.user;
-
+      var status = await OneSignal.shared.getPermissionSubscriptionState();
+      String tokenId = status.subscriptionStatus.userId;
       if (user != null) {
         if (!user.emailVerified) {
           await user.sendEmailVerification();
@@ -504,6 +676,7 @@ class DonorfState extends State<Donorf> {
           bloodg,
           adhar,
           coordinates,
+          tokenId,
           user.uid,
         );
 
@@ -534,23 +707,5 @@ class DonorfState extends State<Donorf> {
     var addresses =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     return addresses.first;
-  }
-
-  Future<Null> displayPrediction(Prediction p, ScaffoldState scaffold) async {
-    if (p != null) {
-      // get detail (lat/lng)
-      GoogleMapsPlaces _places = GoogleMapsPlaces(
-        apiKey: apikey,
-        apiHeaders: await GoogleApiHeaders().getHeaders(),
-      );
-      PlacesDetailsResponse detail =
-          await _places.getDetailsByPlaceId(p.placeId);
-      final lat = detail.result.geometry.location.lat;
-      final lng = detail.result.geometry.location.lng;
-
-      scaffold.showSnackBar(
-        SnackBar(content: Text("${p.description} - $lat/$lng")),
-      );
-    }
   }
 }

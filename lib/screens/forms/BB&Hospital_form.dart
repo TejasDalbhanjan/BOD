@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:BOD/constants/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
@@ -27,7 +29,6 @@ class BBState extends State<BBFul> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController _name = TextEditingController();
-  TextEditingController _phoneno = TextEditingController();
   TextEditingController _lic = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
 
@@ -45,6 +46,7 @@ class BBState extends State<BBFul> {
   String _add;
   String locationMessage = "";
   String _extension;
+  GeoPoint loc;
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _addController = TextEditingController();
@@ -96,6 +98,30 @@ class BBState extends State<BBFul> {
     });
   }
 
+  void getCurrentLocation() async {
+    final position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    List<Placemark> placemark = await Geolocator()
+        .placemarkFromCoordinates(position.latitude, position.longitude);
+    setState(() {
+      locationMessage = "${position.latitude}, ${position.longitude}";
+      loc = GeoPoint(position.latitude, position.longitude);
+      _addController.text = placemark[0].name +
+          ", " +
+          placemark[0].thoroughfare +
+          ", " +
+          placemark[0].subLocality +
+          ", " +
+          placemark[0].locality +
+          " - " +
+          placemark[0].postalCode +
+          ", " +
+          placemark[0].administrativeArea;
+      print(_addController.text);
+      print(coordinates);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final node = FocusScope.of(context);
@@ -104,7 +130,7 @@ class BBState extends State<BBFul> {
       key: _scaffoldkey,
       appBar:
           AppBar(title: Text("DetailsHH").tr(), backgroundColor: Colors.red),
-      //resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: false,
       body: Form(
         key: _formKey,
         child: new Stack(
@@ -113,214 +139,209 @@ class BBState extends State<BBFul> {
               child: new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  new Stack(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.only(top: 40),
-                        child: Column(
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
-                              child: TextFormField(
-                                controller: _name,
-                                validator: (val) {
-                                  if (val.isEmpty)
-                                    return ("Enter Name");
-                                  else
-                                    return null;
-                                },
-                                decoration: InputDecoration(
-                                  labelText: 'nameoHH'.tr(),
-                                  labelStyle: GoogleFonts.lato(
-                                    fontWeight: FontWeight.bold,
-                                    fontStyle: FontStyle.italic,
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                keyboardType: TextInputType.name,
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
-                              child: TextFormField(
-                                controller: _addController,
-                                validator: (val) {
-                                  if (val.isEmpty)
-                                    return ("Inavlid Address");
-                                  else
-                                    return null;
-                                },
-                                decoration: InputDecoration(
-                                  labelText: 'adHH'.tr(),
-                                  labelStyle: GoogleFonts.lato(
-                                    fontWeight: FontWeight.bold,
-                                    fontStyle: FontStyle.italic,
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                keyboardType: TextInputType.multiline,
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
-                              child: TextFormField(
-                                validator: (value) {
-                                  if (value.isEmpty ||
-                                      !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z]+\.[a-zA-Z]+")
-                                          .hasMatch(value)) {
-                                    return 'Enter a valid email!';
-                                  }
-                                  return null;
-                                },
-                                controller: _emailController,
-                                textInputAction: TextInputAction.next,
-                                onEditingComplete: () => node.nextFocus(),
-                                decoration: InputDecoration(
-                                  labelText: 'Email_id'.tr(),
-                                  labelStyle: GoogleFonts.lato(
-                                    fontWeight: FontWeight.bold,
-                                    fontStyle: FontStyle.italic,
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                keyboardType: TextInputType.emailAddress,
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Certificate'.tr(),
-                                    semanticsLabel: "Upload Image",
-                                    style: GoogleFonts.lato(
-                                      fontWeight: FontWeight.bold,
-                                      fontStyle: FontStyle.italic,
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          child: IconButton(
-                                              icon: Icon(
-                                                  Icons.add_a_photo_outlined),
-                                              onPressed: () async {
-                                                _openFileExplorer();
-                                              }),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
-                              child: TextFormField(
-                                controller: _lic,
-                                validator: (val) {
-                                  if (val.isEmpty || val.length < 10)
-                                    return ("Inavlid License Number");
-                                  else
-                                    return null;
-                                },
-                                decoration: InputDecoration(
-                                  labelText: 'LN'.tr(),
-                                  labelStyle: GoogleFonts.lato(
-                                    fontWeight: FontWeight.bold,
-                                    fontStyle: FontStyle.italic,
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                keyboardType: TextInputType.number,
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
-                              child: TextFormField(
-                                controller: _passController,
-                                validator: (value) {
-                                  if (value.isEmpty || value.length < 8) {
-                                    return 'Enter Valid password !';
-                                  }
-                                  return null;
-                                },
-                                textInputAction: TextInputAction.next,
-                                onEditingComplete: () => node.nextFocus(),
-                                decoration: InputDecoration(
-                                  labelText: 'Password'.tr(),
-                                  labelStyle: GoogleFonts.lato(
-                                    fontWeight: FontWeight.bold,
-                                    fontStyle: FontStyle.italic,
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                obscureText: true,
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
-                              child: TextFormField(
-                                controller: _confirmpassController,
-                                textInputAction: TextInputAction.next,
-                                onEditingComplete: () => node.nextFocus(),
-                                validator: (String val) {
-                                  if (val != _passController.text)
-                                    return "Invalid Password";
-                                  else
-                                    return null;
-                                },
-                                decoration: InputDecoration(
-                                  errorText: _errorpass,
-                                  labelText: 'ConfirmP'.tr(),
-                                  labelStyle: GoogleFonts.lato(
-                                    fontWeight: FontWeight.bold,
-                                    fontStyle: FontStyle.italic,
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                obscureText: true,
-                              ),
-                            ),
-                            Container(
-                              height: 50,
-                              child: MaterialButton(
-                                onPressed: () {
-                                  _registerAccount();
-                                },
-                                color: Colors.red,
-                                highlightColor: Colors.redAccent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  side: BorderSide(color: Colors.white),
-                                ),
-                                elevation: 8.0,
-                                child: Center(
-                                  child: Text(
-                                    'SUBMIT'.tr(),
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
+                    child: TextFormField(
+                      controller: _name,
+                      validator: (val) {
+                        if (val.isEmpty)
+                          return ("Enter Name");
+                        else
+                          return null;
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'nameoHH'.tr(),
+                        labelStyle: GoogleFonts.lato(
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black,
+                          fontSize: 16,
                         ),
                       ),
-                    ],
-                  )
+                      keyboardType: TextInputType.name,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
+                    child: TextFormField(
+                      readOnly: true,
+                      controller: _addController,
+                      validator: (val) {
+                        if (val.isEmpty)
+                          return ("Inavlid Address");
+                        else
+                          return null;
+                      },
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.location_on),
+                          onPressed: () {
+                            getCurrentLocation();
+                          },
+                        ),
+                        labelText: 'adHH'.tr(),
+                        labelStyle: GoogleFonts.lato(
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                      keyboardType: TextInputType.multiline,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value.isEmpty ||
+                            !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z]+\.[a-zA-Z]+")
+                                .hasMatch(value)) {
+                          return 'Enter a valid email!';
+                        }
+                        return null;
+                      },
+                      controller: _emailController,
+                      textInputAction: TextInputAction.next,
+                      onEditingComplete: () => node.nextFocus(),
+                      decoration: InputDecoration(
+                        labelText: 'Email_id'.tr(),
+                        labelStyle: GoogleFonts.lato(
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
+                    child: Row(
+                      children: [
+                        Text(
+                          'Certificate'.tr(),
+                          semanticsLabel: "Upload Image",
+                          style: GoogleFonts.lato(
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Container(
+                          child: Row(
+                            children: [
+                              Container(
+                                child: IconButton(
+                                    icon: Icon(Icons.add_a_photo_outlined),
+                                    onPressed: () async {
+                                      _openFileExplorer();
+                                    }),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
+                    child: TextFormField(
+                      controller: _lic,
+                      validator: (val) {
+                        if (val.isEmpty || val.length < 10)
+                          return ("Inavlid License Number");
+                        else
+                          return null;
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'LN'.tr(),
+                        labelStyle: GoogleFonts.lato(
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                      keyboardType: TextInputType.number,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
+                    child: TextFormField(
+                      controller: _passController,
+                      validator: (value) {
+                        if (value.isEmpty || value.length < 8) {
+                          return 'Enter Valid password !';
+                        }
+                        return null;
+                      },
+                      textInputAction: TextInputAction.next,
+                      onEditingComplete: () => node.nextFocus(),
+                      decoration: InputDecoration(
+                        labelText: 'Password'.tr(),
+                        labelStyle: GoogleFonts.lato(
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                      obscureText: true,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 5, 20, 0),
+                    child: TextFormField(
+                      controller: _confirmpassController,
+                      textInputAction: TextInputAction.next,
+                      onEditingComplete: () => node.nextFocus(),
+                      validator: (String val) {
+                        if (val != _passController.text)
+                          return "Invalid Password";
+                        else
+                          return null;
+                      },
+                      decoration: InputDecoration(
+                        errorText: _errorpass,
+                        labelText: 'ConfirmP'.tr(),
+                        labelStyle: GoogleFonts.lato(
+                          fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
+                      obscureText: true,
+                    ),
+                  ),
+                  Container(
+                    height: 50,
+                    child: MaterialButton(
+                      onPressed: () {
+                        _registerAccount();
+                      },
+                      color: Colors.red,
+                      highlightColor: Colors.redAccent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        side: BorderSide(color: Colors.white),
+                      ),
+                      elevation: 8.0,
+                      child: Center(
+                        child: Text(
+                          'SUBMIT'.tr(),
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -328,6 +349,11 @@ class BBState extends State<BBFul> {
         ),
       ),
     );
+  }
+
+  Future getCoordinatesFromAddress(String address) async {
+    await Geolocator().placemarkFromAddress(address);
+    return;
   }
 
   GlobalKey<FormState> buildFormKey() => _formKey;
@@ -355,6 +381,7 @@ class BBState extends State<BBFul> {
           name,
           add,
           lic,
+          loc,
           user.uid,
         );
 

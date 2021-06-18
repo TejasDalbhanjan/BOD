@@ -1,6 +1,5 @@
 import 'package:BOD/screens/update_password.dart';
 import '../services/database.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'language_change.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -139,15 +138,6 @@ class _SetState extends State<Set> {
                 ),
                 SizedBox(
                   height: (20.0),
-                ),
-                Center(
-                  child: Container(
-                    child: CircularPercentIndicator(
-                      progressColor: Colors.redAccent,
-                      radius: 5,
-                      percent: 0.8,
-                    ),
-                  ),
                 ),
               ],
             ),

@@ -1,4 +1,3 @@
-import 'package:BOD/services/google_maps_services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../screens/app_drawer.dart';
@@ -17,10 +16,8 @@ class GmapState extends State<Mapp> {
   TextEditingController locationController = TextEditingController();
   TextEditingController destinationController = TextEditingController();
   var geolocator = Geolocator();
-  GoogleMapsServices _googleMapsServices = GoogleMapsServices();
   Position currentPosition;
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
-  LatLng _lastPosition;
 
   LatLng latLatPosition;
   static LatLng _initialPosition;
@@ -44,11 +41,38 @@ class GmapState extends State<Mapp> {
     });
   }
 
+  void initHospitalMarker(specify, specifyId) async {
+    var markerIdval = specifyId;
+    final MarkerId markerId = MarkerId(markerIdval);
+    final Marker marker = Marker(
+      markerId: markerId,
+      position:
+          LatLng(specify['location'].latitude, specify['location'].longitude),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+      infoWindow: InfoWindow(
+        title: specify['name'],
+        snippet: specify['Licence_No'],
+      ),
+      zIndex: 20,
+      draggable: false,
+    );
+    setState(() {
+      markers[markerId] = marker;
+    });
+  }
+
   getMarkerData() async {
     FirebaseFirestore.instance.collection('user').get().then((value) {
       if (value.docs.isNotEmpty) {
         for (int i = 0; i < value.docs.length; i++) {
           initMarker(value.docs[i].data(), value.docs[i].id);
+        }
+      }
+    });
+    FirebaseFirestore.instance.collection('hospital').get().then((value) {
+      if (value.docs.isNotEmpty) {
+        for (int i = 0; i < value.docs.length; i++) {
+          initHospitalMarker(value.docs[i].data(), value.docs[i].id);
         }
       }
     });
@@ -58,10 +82,10 @@ class GmapState extends State<Mapp> {
   void initState() {
     getMarkerData();
     super.initState();
-    locateP();
+    locateCurrentPosition();
   }
 
-  void locateP() async {
+  void locateCurrentPosition() async {
     Position position = await geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best);
     currentPosition = position;
@@ -110,7 +134,7 @@ class GmapState extends State<Mapp> {
                     onMapCreated: (controller) {
                       setState(() {
                         _mapController = controller;
-                        locateP();
+                        locateCurrentPosition();
                         print(_markers);
                       });
                     },
@@ -121,71 +145,5 @@ class GmapState extends State<Mapp> {
               ],
             ),
           );
-  }
-
-  void createRoute(String encondedPoly) {
-    _polyLines.add(Polyline(
-        polylineId: PolylineId(_lastPosition.toString()),
-        width: 10,
-        points: _convertToLatLng(_decodePoly(encondedPoly)),
-        color: Colors.black));
-  }
-
-  // ! CREATE LAGLNG LIST
-  List<LatLng> _convertToLatLng(List points) {
-    List<LatLng> result = <LatLng>[];
-    for (int i = 0; i < points.length; i++) {
-      if (i % 2 != 0) {
-        result.add(LatLng(points[i - 1], points[i]));
-      }
-    }
-    return result;
-  }
-
-  // !DECODE POLY
-  List _decodePoly(String poly) {
-    var list = poly.codeUnits;
-    var lList = new List();
-    int index = 0;
-    int len = poly.length;
-    int c = 0;
-// repeating until all attributes are decoded
-    do {
-      var shift = 0;
-      int result = 0;
-
-      // for decoding value of one attribute
-      do {
-        c = list[index] - 63;
-        result |= (c & 0x1F) << (shift * 5);
-        index++;
-        shift++;
-      } while (c >= 32);
-      /* if value is negetive then bitwise not the value */
-      if (result & 1 == 1) {
-        result = ~result;
-      }
-      var result1 = (result >> 1) * 0.00001;
-      lList.add(result1);
-    } while (index < len);
-
-/*adding to previous value as done in encoding */
-
-    for (var i = 2; i < lList.length; i++) lList[i] += lList[i - 2];
-
-    print(lList.toString());
-
-    return lList;
-  }
-
-  void sendRequest(String intendedLocation) async {
-    List<Placemark> placemark =
-        await Geolocator().placemarkFromAddress(intendedLocation);
-    double lat = placemark[0].position.latitude;
-    double long = placemark[0].position.longitude;
-    LatLng destination = LatLng(lat, long);
-    initMarker(destination, intendedLocation);
-    String route = await _googleMapsServices.getRouteCoordinates(
-        _initialPosition, destination);
   }
 }

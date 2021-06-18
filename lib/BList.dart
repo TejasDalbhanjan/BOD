@@ -1,12 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:BOD/constants/constants.dart';
+import 'package:BOD/screens/app_drawer.dart';
+import 'package:BOD/screens/homepage.dart';
+import 'package:BOD/screens/terms&conditions.dart';
+import 'package:BOD/track_donor.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
-import 'screens/terms&conditions.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class View extends StatefulWidget {
   @override
@@ -15,34 +19,57 @@ class View extends StatefulWidget {
 
 class _ViewState extends State<View> {
   @override
+  void initState() {
+    super.initState();
+    OneSignal.shared.setNotificationOpenedHandler((result) {
+      if (result.action.actionId == "accept_button") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => TC()),
+        );
+      } else if (result.action.actionId == "deny_button") {
+        return;
+      }
+    });
+  }
+
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('user').snapshots(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) return Text("Some Error");
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text("Loading...");
-              } else {
-                final list = snapshot.data.docs;
-                return ListView.builder(
-                  itemBuilder: (context, i) {
-                    return JobCard(
-                      title: list[i]['name'],
-                      subtitle: list[i]['email'],
-                      bloodGroup: list[i]['Blood-Group'],
-                      tokenid: list[i]['tokenId'],
-                    );
-                  },
-                  itemCount: list.length,
-                );
-              }
-            },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Blood').tr(),
+        backgroundColor: Colors.red,
+      ),
+      drawer: ADrawer(),
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('user').snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) return Text("Some Error");
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  final list = snapshot.data.docs;
+                  return ListView.builder(
+                    itemBuilder: (context, i) {
+                      return JobCard(
+                        title: list[i]['name'],
+                        subtitle: list[i]['email'],
+                        bloodGroup: list[i]['Blood-Group'],
+                        tokenid: list[i]['tokenId'],
+                      );
+                    },
+                    itemCount: list.length,
+                  );
+                }
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -67,22 +94,24 @@ class _JobCardState extends State<JobCard> {
   @override
   void initState() {
     super.initState();
+  }
+
+  Future<Response> sendNotification(
+      List<String> tokenIdList, String contents, String heading) async {
     OneSignal.shared.setNotificationOpenedHandler((result) {
       if (result.action.actionId == "accept_button") {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => TC(),
-          ),
+              builder: (context) => TrackDonor(
+                    tokenid: widget.tokenid,
+                  )),
         );
+        print(widget.tokenid);
       } else if (result.action.actionId == "deny_button") {
         return;
       }
     });
-  }
-
-  Future<Response> sendNotification(
-      List<String> tokenIdList, String contents, String heading) async {
     return await post(
       Uri.parse('https://onesignal.com/api/v1/notifications'),
       headers: <String, String>{
@@ -112,16 +141,16 @@ class _JobCardState extends State<JobCard> {
     );
   }
 
-  getuserName() {
+  getuserName() async {
     final id = FirebaseAuth.instance.currentUser.uid;
-    return StreamBuilder(
-        stream:
-            FirebaseFirestore.instance.collection('user').doc(id).snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) return CircularProgressIndicator();
 
-          return snapshot.data['name'];
-        });
+    await FirebaseFirestore.instance
+        .collection('user')
+        .doc(id)
+        .get()
+        .then((value) {
+      return value.data()['name'];
+    });
   }
 
   @override
@@ -183,12 +212,18 @@ class _JobCardState extends State<JobCard> {
                 )
               ],
             ),
-            GestureDetector(
-              onTap: () => sendNotification(
-                  [widget.tokenid], "hello", "FlutterCloudMessage"),
+            RaisedButton(
+              color: Colors.red,
+              onPressed: () {
+                sendNotification(
+                    [widget.tokenid], "User requested", "FlutterCloudMessage");
+              },
               child: Container(
                 padding: EdgeInsets.all(10),
-                child: Icon(Icons.accessibility),
+                child: Text(
+                  "Request",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             )
           ],
